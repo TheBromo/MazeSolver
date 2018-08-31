@@ -17,16 +17,20 @@
 }
 
 .close-button {
-    -fx-font-size: 12px;
-    -fx-padding: 1px;
+    -fx-border-radius: 2 2 2 2;
+    -fx-background-radius: 2 2 2 2;
+    /*-fx-font-size: 12px;*/
+
 }
 
 .close-button:hover {
-    -fx-border-color: white;
-    -fx-border-size: 1px;
-    -fx-border-style: solid;
+
 }
 
 .content{
     -fx-background-color: #b2bec3;
+}
+
+.close-button {
+
 }

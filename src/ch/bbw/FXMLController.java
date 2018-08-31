@@ -1,9 +1,8 @@
 package ch.bbw;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -25,7 +24,7 @@ public class FXMLController implements Initializable {
 
     @FXML
     public void close(MouseEvent evt) {
-        ((Label)evt.getSource()).getScene().getWindow().hide();
+        ((Button) evt.getSource()).getScene().getWindow().hide();
     }
 
     @FXML
