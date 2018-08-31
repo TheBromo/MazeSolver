@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 public class MainApp extends Application {
@@ -12,14 +13,34 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
-        
-        Scene scene = new Scene(root);
+
+
+
+        Scene scene = null;
+
+        String osName = System.getProperty("os.name");
+        if( osName != null && osName.startsWith("Windows") ) {
+
+            //
+            // Windows hack b/c unlike Mac and Linux, UNDECORATED doesn't include a shadow
+            //
+            scene = (new WindowsHack()).getShadowScene(root);
+            stage.initStyle(StageStyle.TRANSPARENT);
+
+        } else {
+            scene = new Scene( root );
+            stage.initStyle(StageStyle.UNDECORATED);
+        }
+
         scene.getStylesheets().add("/styles/Styles.css");
-        
-        stage.setTitle("JavaFX and Maven");
-        stage.setScene(scene);
+
+        stage.setTitle("MazeSolver");
+        stage.setScene( scene );
+        stage.setMinHeight(200.0d);
+        stage.setMinWidth(300.0d);
         stage.show();
     }
+
 
     /**
      * The main() method is ignored in correctly deployed JavaFX application.

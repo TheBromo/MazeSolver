@@ -6,9 +6,27 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml" fx:controller="ch.bbw.FXMLController">
-    <children>
-        <Button layoutX="126" layoutY="90" text="Click Me!" onAction="#handleButtonAction" fx:id="button" />
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" fx:id="label" />
-    </children>
-</AnchorPane>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.bbw.FXMLController">
+   <children>
+      <HBox styleClass="title-bar">
+         <children>
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="title" text="Flat WIn" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefWidth="20.0">
+               <children>
+                  <Label onMouseClicked="#close" styleClass="close-button" text="X" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+         <children>
+            <Label alignment="CENTER" text="Content" />
+         </children>
+      </VBox>
+   </children>
+</VBox>
