@@ -12,9 +12,9 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
-
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+        Parent root = loader.load();
+        FXMLController controller = (FXMLController) loader.getController();
 
         Scene scene = null;
 
@@ -39,6 +39,9 @@ public class MainApp extends Application {
         stage.setMinHeight(200.0d);
         stage.setMinWidth(300.0d);
         stage.show();
+        controller.setPrimaryStage(stage);
+        controller.setRoot(root);
+
     }
 
 

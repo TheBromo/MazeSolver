@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <VBox fx:id="vbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.bbw.FXMLController">
    <children>
-      <HBox onDragDetected="#startMoveWindow" onMouseDragged="#moveWindow" onMouseReleased="#endMoveWindow" styleClass="title-bar">
+       <HBox fx:id="header" styleClass="title-bar">
          <children>
             <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                <children>
@@ -20,11 +20,12 @@
             </HBox>
             <HBox alignment="CENTER" prefWidth="20.0">
                <children>
-                   <Button alignment="CENTER" mnemonicParsing="false" onMouseClicked="#close"
+                   <Button alignment="CENTER" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#close"
+                           prefWidth="50.0"
                            style="-fx-background-color: #d63031; -fx-border-radius: 0; -fx-text-fill: #dfe6e9;"
                            styleClass="close-button" text="X" textAlignment="CENTER" HBox.hgrow="ALWAYS">
                        <HBox.margin>
-                           <Insets/>
+                           <Insets left="20.0"/>
                        </HBox.margin>
                    </Button>
                </children>
