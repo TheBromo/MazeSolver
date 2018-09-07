@@ -19,7 +19,7 @@ public class MazeTest {
     @DisplayName("Getting test")
     public void testGet() {
         if (maze.getField(0, 0) == null) {
-            fail("field is " + maze.getField(0, 0));
+            fail("Test failed  " + maze.getField(0, 0));
         }
 
 
