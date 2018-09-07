@@ -1,4 +1,4 @@
-package ch.bbw;
+package ch.bbw.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

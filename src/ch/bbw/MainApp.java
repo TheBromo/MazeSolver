@@ -1,5 +1,6 @@
 package ch.bbw;
 
+import ch.bbw.controller.FXMLController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
