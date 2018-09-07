@@ -13,8 +13,8 @@ public class Maze {
     }
 
     private void initFields() {
-        for (Field f : fields) {
-            f = new Field();
+        for (int i = 0; i < fields.length; i++) {
+            fields[i] = new Field();
         }
     }
 
