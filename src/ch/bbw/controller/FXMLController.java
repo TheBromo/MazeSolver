@@ -3,6 +3,8 @@ package ch.bbw.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -20,6 +22,9 @@ public class FXMLController implements Initializable {
     VBox vbox;
     @FXML
     HBox header;
+    @FXML
+    Canvas canvas;
+    private GraphicsContext gc;
     private double oldX, oldY;
     private Stage primaryStage;
     private Parent root;
@@ -41,8 +46,7 @@ public class FXMLController implements Initializable {
         ((Button) evt.getSource()).getScene().getWindow().hide();
     }
 
-
-    public void moveWindow(MouseEvent event, boolean moving) {
+    private void moveWindow(MouseEvent event, boolean moving) {
         if (moving) {
             primaryStage.setX(primaryStage.getX() + (event.getScreenX() - oldX));
             primaryStage.setY(primaryStage.getY() + (event.getScreenY() - oldY));
@@ -52,9 +56,14 @@ public class FXMLController implements Initializable {
         oldY = event.getScreenY();
     }
 
+    private void draw() {
+
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         header.setOnMouseDragged(event -> moveWindow(event, true));
         header.setOnMouseMoved(event -> moveWindow(event, false));
+        gc = canvas.getGraphicsContext2D();
     }    
 }

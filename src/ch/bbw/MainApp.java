@@ -34,7 +34,6 @@ public class MainApp extends Application {
         }
 
         scene.getStylesheets().add("/styles/Styles.css");
-
         stage.setTitle("MazeSolver");
         stage.setScene( scene );
         stage.setMinHeight(200.0d);
