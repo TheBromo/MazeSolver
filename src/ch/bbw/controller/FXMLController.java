@@ -1,5 +1,6 @@
 package ch.bbw.controller;
 
+import ch.bbw.model.Maze;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -56,8 +57,12 @@ public class FXMLController implements Initializable {
         oldY = event.getScreenY();
     }
 
-    private void draw() {
+    private void draw(Maze maze) {
+        for (int x = 0; x < maze.getSize(); x++) {
+            for (int y = 0; y < maze.getSize(); y++) {
 
+            }
+        }
     }
 
     @Override

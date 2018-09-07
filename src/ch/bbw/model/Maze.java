@@ -22,5 +22,7 @@ public class Maze {
         return fields[x + y * size];
     }
 
-
+    public int getSize() {
+        return size;
+    }
 }

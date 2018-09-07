@@ -21,5 +21,7 @@ public class MazeTest {
         if (maze.getField(0, 0) == null) {
             fail("field is " + maze.getField(0, 0));
         }
+
+
     }
 }
