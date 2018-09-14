@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -33,6 +34,8 @@ public class FXMLController implements Initializable {
 
     //size of each block in pixels
     private int size;
+    private Image image;
+
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -62,12 +65,14 @@ public class FXMLController implements Initializable {
             for (int y = 0; y < maze.getSize(); y++) {
                 Field field = maze.getField(x, y);
                 if (field instanceof Empty) {
-
                 } else if (field instanceof Wall) {
                     gc.setFill(Color.GRAY);
                     gc.fillRect(x + 1, y + 1, 8, 8);
                 } else if (field instanceof Robot) {
-
+                    gc.drawImage(image, x, y, size, size);
+                } else {
+                    gc.setFill(Color.GREEN);
+                    gc.fillOval(x, y, size, size);
                 }
             }
         }
@@ -79,5 +84,35 @@ public class FXMLController implements Initializable {
         header.setOnMouseMoved(event -> moveWindow(event, false));
         size = 10;
         gc = canvas.getGraphicsContext2D();
+        image = new Image(getClass().getResourceAsStream("/robot.jpeg"));
+        Maze maze = new Maze(5);
+
+        maze.setField(0, 0, new Wall());
+        maze.setField(1, 0, new Wall());
+        maze.setField(2, 0, new Wall());
+        maze.setField(3, 0, new Wall());
+        maze.setField(4, 0, new Wall());
+        maze.setField(0, 1, new Wall());
+        maze.setField(1, 1, new Robot());
+        maze.setField(2, 1, new Empty());
+        maze.setField(3, 1, new Empty());
+        maze.setField(4, 1, new Wall());
+        maze.setField(0, 2, new Wall());
+        maze.setField(1, 2, new Empty());
+        maze.setField(2, 2, new Empty());
+        maze.setField(3, 2, new Empty());
+        maze.setField(4, 2, new Wall());
+        maze.setField(0, 3, new Wall());
+        maze.setField(1, 3, new Empty());
+        maze.setField(2, 3, new Empty());
+        maze.setField(3, 3, new Empty());
+        maze.setField(4, 3, new Wall());
+        maze.setField(0, 4, new Wall());
+        maze.setField(1, 4, new Wall());
+        maze.setField(2, 4, new Wall());
+        maze.setField(3, 4, new Empty());
+        maze.setField(4, 4, new Wall());
+        draw(maze);
+
     }
 }
