@@ -35,5 +35,7 @@ public class Maze
 	public void setField(int x, int y, Field field)
 	{
 		fields[x + y * size] = field;
+        field.setX(x);
+        field.setY(y);
 	}
 }
