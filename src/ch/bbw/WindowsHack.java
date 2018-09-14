@@ -13,7 +13,6 @@ import javafx.scene.paint.Color;
 
 class WindowsHack
 {
-
 	Scene getShadowScene(Parent p)
 	{
 		Scene scene;
@@ -30,6 +29,4 @@ class WindowsHack
 		scene.setFill(Color.rgb(0, 0, 0, 0));
 		return scene;
 	}
-
-
 }
