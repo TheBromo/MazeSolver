@@ -1,17 +1,19 @@
 package ch.bbw.controller;
 
+import ch.bbw.model.Fields.Empty;
+import ch.bbw.model.Fields.Field;
+import ch.bbw.model.Fields.Robot;
+import ch.bbw.model.Fields.Wall;
 import ch.bbw.model.Maze;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Popup;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -28,20 +30,14 @@ public class FXMLController implements Initializable {
     private GraphicsContext gc;
     private double oldX, oldY;
     private Stage primaryStage;
-    private Parent root;
 
-    private double startMoveX = -1, startMoveY = -1;
-    private Boolean dragging = false;
-    private Rectangle moveTrackingRect;
-    private Popup moveTrackingPopup;
+    //size of each block in pixels
+    private int size;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
-    public void setRoot(Parent root) {
-        this.root = root;
-    }
     @FXML
     public void close(MouseEvent evt) {
         ((Button) evt.getSource()).getScene().getWindow().hide();
@@ -58,9 +54,21 @@ public class FXMLController implements Initializable {
     }
 
     private void draw(Maze maze) {
+        gc.setFill(Color.DARKGRAY);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, maze.getSize() * size, maze.getSize() * size);
         for (int x = 0; x < maze.getSize(); x++) {
             for (int y = 0; y < maze.getSize(); y++) {
+                Field field = maze.getField(x, y);
+                if (field instanceof Empty) {
 
+                } else if (field instanceof Wall) {
+                    gc.setFill(Color.GRAY);
+                    gc.fillRect(x + 1, y + 1, 8, 8);
+                } else if (field instanceof Robot) {
+
+                }
             }
         }
     }
@@ -69,6 +77,7 @@ public class FXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         header.setOnMouseDragged(event -> moveWindow(event, true));
         header.setOnMouseMoved(event -> moveWindow(event, false));
+        size = 10;
         gc = canvas.getGraphicsContext2D();
-    }    
+    }
 }

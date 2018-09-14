@@ -40,7 +40,6 @@ public class MainApp extends Application {
         stage.setMinWidth(300.0d);
         stage.show();
         controller.setPrimaryStage(stage);
-        controller.setRoot(root);
 
     }
 
