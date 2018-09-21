@@ -93,7 +93,7 @@ public class FXMLController implements Initializable {
         maze.setField(3, 0, new Wall());
         maze.setField(4, 0, new Wall());
         maze.setField(0, 1, new Wall());
-        maze.setField(1, 1, new Robot());
+        maze.setField(1, 1, new Robot('u'));
         maze.setField(2, 1, new Empty());
         maze.setField(3, 1, new Empty());
         maze.setField(4, 1, new Wall());
