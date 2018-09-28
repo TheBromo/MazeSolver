@@ -13,9 +13,11 @@ public class MazeSolver
 	private Robot robot;
 	private Goal goal;
 	private FXMLController controller;
+	private boolean isPaused;
 
 	public MazeSolver(FXMLController controller)
 	{
+		isPaused = false;
 		this.controller = controller;
 		maze = new Maze(7);
 		solved = false;
@@ -78,15 +80,18 @@ public class MazeSolver
 	{
 		while(solved == false)
 		{
-			step();
-			controller.draw();
-			try
+			if(!isPaused)
 			{
-				Thread.sleep(1000);
-			}
-			catch (InterruptedException e)
-			{
-				e.printStackTrace();
+				step();
+				controller.draw();
+				try
+				{
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -280,5 +285,15 @@ public class MazeSolver
 	public void setGoal(Goal goal)
 	{
 		this.goal = goal;
+	}
+
+	public boolean isPaused()
+	{
+		return isPaused;
+	}
+
+	public void setPaused(boolean paused)
+	{
+		isPaused = paused;
 	}
 }
