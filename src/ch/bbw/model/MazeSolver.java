@@ -7,14 +7,14 @@ import ch.bbw.model.Fields.Wall;
 
 public class MazeSolver
 {
-	public Maze maze;
-	public boolean solved;
-	public Robot robot;
-	public Goal goal;
+	private Maze maze;
+	private boolean solved;
+	private Robot robot;
+	private Goal goal;
 
 	public MazeSolver()
 	{
-		maze = new Maze(5);
+		maze = new Maze(7);
 		solved = false;
 		robot = new Robot('u');
 		goal = new Goal();
@@ -23,26 +23,50 @@ public class MazeSolver
 		maze.setField(2,0, new Wall());
 		maze.setField(3,0, new Wall());
 		maze.setField(4,0, new Wall());
+		maze.setField(5,0, new Wall());
+		maze.setField(6,0, new Wall());
 		maze.setField(0,1, new Wall());
 		maze.setField(1,1, robot);
 		maze.setField(2,1, new Empty());
 		maze.setField(3,1, new Empty());
-		maze.setField(4,1, new Wall());
+		maze.setField(4,1, new Empty());
+		maze.setField(5,1, new Empty());
+		maze.setField(6,1, new Wall());
 		maze.setField(0,2, new Wall());
 		maze.setField(1,2, new Empty());
 		maze.setField(2,2, new Empty());
 		maze.setField(3,2, new Empty());
-		maze.setField(4,2, new Wall());
+		maze.setField(4,2, new Empty());
+		maze.setField(5,2, new Empty());
+		maze.setField(6,2, new Wall());
 		maze.setField(0,3, new Wall());
 		maze.setField(1,3, new Empty());
-		maze.setField(2,3, new Empty());
+		maze.setField(2,3, new Wall());
 		maze.setField(3,3, new Empty());
-		maze.setField(4,3, new Wall());
+		maze.setField(4,3, new Empty());
+		maze.setField(5,3, new Empty());
+		maze.setField(6,3, new Wall());
 		maze.setField(0,4, new Wall());
-		maze.setField(1,4, new Wall());
-		maze.setField(2,4, new Wall());
-		maze.setField(3,4, goal);
-		maze.setField(4,4, new Wall());
+		maze.setField(1,4, new Empty());
+		maze.setField(2,4, new Empty());
+		maze.setField(3,4, new Wall());
+		maze.setField(4,4, new Empty());
+		maze.setField(5,4, new Empty());
+		maze.setField(6,4, new Wall());
+		maze.setField(0,5, new Wall());
+		maze.setField(1,5, new Empty());
+		maze.setField(2,5, new Empty());
+		maze.setField(3,5, new Wall());
+		maze.setField(4,5, new Empty());
+		maze.setField(5,5, new Empty());
+		maze.setField(6,5, new Wall());
+		maze.setField(0,6, new Wall());
+		maze.setField(1,6, new Wall());
+		maze.setField(2,6, new Wall());
+		maze.setField(3,6, new Wall());
+		maze.setField(4,6, new Wall());
+		maze.setField(5,6, new Goal());
+		maze.setField(6,6, new Wall());
 
 		System.out.println("X: " + robot.getX() + "\nY: " + robot.getY() + "\n");
 	}
@@ -212,5 +236,45 @@ public class MazeSolver
 		}
 
 		System.out.println("\nX: " + robot.getX() + "\nY: " + robot.getY() + "\n");
+	}
+
+	public Maze getMaze()
+	{
+		return maze;
+	}
+
+	public void setMaze(Maze maze)
+	{
+		this.maze = maze;
+	}
+
+	public boolean isSolved()
+	{
+		return solved;
+	}
+
+	public void setSolved(boolean solved)
+	{
+		this.solved = solved;
+	}
+
+	public Robot getRobot()
+	{
+		return robot;
+	}
+
+	public void setRobot(Robot robot)
+	{
+		this.robot = robot;
+	}
+
+	public Goal getGoal()
+	{
+		return goal;
+	}
+
+	public void setGoal(Goal goal)
+	{
+		this.goal = goal;
 	}
 }

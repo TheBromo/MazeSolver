@@ -38,4 +38,19 @@ public class Maze
         field.setX(x);
         field.setY(y);
 	}
+
+	public Field[] getFields()
+	{
+		return fields;
+	}
+
+	public void setFields(Field[] fields)
+	{
+		this.fields = fields;
+	}
+
+	public void setSize(int size)
+	{
+		this.size = size;
+	}
 }

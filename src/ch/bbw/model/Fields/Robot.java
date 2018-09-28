@@ -41,4 +41,9 @@ public class Robot extends Field
 	{
 		return orientation;
 	}
+
+	public void setOrientation(char orientation)
+	{
+		this.orientation = orientation;
+	}
 }
