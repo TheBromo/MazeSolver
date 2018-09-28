@@ -1,9 +1,6 @@
 package ch.bbw.controller;
 
-import ch.bbw.model.Fields.Empty;
-import ch.bbw.model.Fields.Field;
-import ch.bbw.model.Fields.Robot;
-import ch.bbw.model.Fields.Wall;
+import ch.bbw.model.Fields.*;
 import ch.bbw.model.Maze;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,12 +26,12 @@ public class FXMLController implements Initializable {
     @FXML
     Canvas canvas;
     private GraphicsContext gc;
-    private double oldX, oldY;
+    private static Image robot, wall, grass, flag;
     private Stage primaryStage;
 
     //size of each block in pixels
     private int size;
-    private Image image;
+    private double oldX, oldY, oldCanvasX, oldCanvasY;
 
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -56,6 +53,16 @@ public class FXMLController implements Initializable {
         oldY = event.getScreenY();
     }
 
+    private void moveCanvas(MouseEvent event, boolean moving) {
+    /*    if (moving) {
+            canvas.setTranslateX(canvas.getTranslateX() + (event.getX() - oldCanvasX));
+            canvas.setTranslateY(canvas.getTranslateY() + (event.getY() - oldCanvasY));
+        }
+        oldCanvasX = event.getX();
+        oldCanvasY = event.getY();
+    */
+    }
+
     private void draw(Maze maze) {
         gc.setFill(Color.DARKGRAY);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -65,14 +72,15 @@ public class FXMLController implements Initializable {
             for (int y = 0; y < maze.getSize(); y++) {
                 Field field = maze.getField(x, y);
                 if (field instanceof Empty) {
+                    gc.drawImage(grass, x * size, y * size, size, size);
                 } else if (field instanceof Wall) {
-                    gc.setFill(Color.GRAY);
-                    gc.fillRect(x + 1, y + 1, 8, 8);
+                    gc.drawImage(wall, x * size, y * size, size, size);
                 } else if (field instanceof Robot) {
-                    gc.drawImage(image, x, y, size, size);
+                    gc.drawImage(grass, x * size, y * size, size, size);
+                    gc.drawImage(robot, x * size, y * size, size, size);
                 } else {
-                    gc.setFill(Color.GREEN);
-                    gc.fillOval(x, y, size, size);
+                    gc.drawImage(grass, x * size, y * size, size, size);
+                    gc.drawImage(flag, x * size, y * size, size, size);
                 }
             }
         }
@@ -82,9 +90,17 @@ public class FXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         header.setOnMouseDragged(event -> moveWindow(event, true));
         header.setOnMouseMoved(event -> moveWindow(event, false));
-        size = 10;
+
+        canvas.setOnMouseDragged(event -> moveCanvas(event, true));
+        canvas.setOnMouseMoved(event -> moveCanvas(event, false));
+
+        size = 150;
         gc = canvas.getGraphicsContext2D();
-        image = new Image(getClass().getResourceAsStream("/robot.jpeg"));
+        robot = new Image(getClass().getResourceAsStream("/robot.png"));
+        wall = new Image(getClass().getResourceAsStream("/wall.png"));
+        grass = new Image(getClass().getResourceAsStream("/grass.png"));
+        flag = new Image(getClass().getResourceAsStream("/flag.png"));
+
         Maze maze = new Maze(5);
 
         maze.setField(0, 0, new Wall());
@@ -110,9 +126,11 @@ public class FXMLController implements Initializable {
         maze.setField(0, 4, new Wall());
         maze.setField(1, 4, new Wall());
         maze.setField(2, 4, new Wall());
-        maze.setField(3, 4, new Empty());
+        maze.setField(3, 4, new Goal());
         maze.setField(4, 4, new Wall());
         draw(maze);
 
     }
+
+
 }
