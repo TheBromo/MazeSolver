@@ -1,5 +1,6 @@
 package ch.bbw.model;
 
+import ch.bbw.controller.FXMLController;
 import ch.bbw.model.Fields.Empty;
 import ch.bbw.model.Fields.Goal;
 import ch.bbw.model.Fields.Robot;
@@ -11,9 +12,11 @@ public class MazeSolver
 	private boolean solved;
 	private Robot robot;
 	private Goal goal;
+	private FXMLController controller;
 
-	public MazeSolver()
+	public MazeSolver(FXMLController controller)
 	{
+		this.controller = controller;
 		maze = new Maze(7);
 		solved = false;
 		robot = new Robot('u');
@@ -76,6 +79,7 @@ public class MazeSolver
 		while(solved == false)
 		{
 			step();
+			controller.draw();
 			try
 			{
 				Thread.sleep(1000);
