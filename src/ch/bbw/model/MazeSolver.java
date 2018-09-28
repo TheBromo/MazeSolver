@@ -1,6 +1,7 @@
 package ch.bbw.model;
 
 import ch.bbw.model.Fields.Empty;
+import ch.bbw.model.Fields.Goal;
 import ch.bbw.model.Fields.Robot;
 import ch.bbw.model.Fields.Wall;
 
@@ -9,12 +10,14 @@ public class MazeSolver
 	public Maze maze;
 	public boolean solved;
 	public Robot robot;
+	public Goal goal;
 
 	public MazeSolver()
 	{
 		maze = new Maze(5);
 		solved = false;
-		robot = new Robot();
+		robot = new Robot('u');
+		goal = new Goal();
 		maze.setField(0,0, new Wall());
 		maze.setField(1,0, new Wall());
 		maze.setField(2,0, new Wall());
@@ -38,7 +41,7 @@ public class MazeSolver
 		maze.setField(0,4, new Wall());
 		maze.setField(1,4, new Wall());
 		maze.setField(2,4, new Wall());
-		maze.setField(3,4, new Empty());
+		maze.setField(3,4, goal);
 		maze.setField(4,4, new Wall());
 
 		System.out.println("X: " + robot.getX() + "\nY: " + robot.getY() + "\n");
@@ -49,28 +52,165 @@ public class MazeSolver
 		while(solved == false)
 		{
 			step();
-			break;
+			try
+			{
+				Thread.sleep(1000);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public void step()
 	{
-		if(maze.getField(robot.getX(), robot.getY()-1) instanceof Empty)
+		if(maze.getField(robot.getX(), robot.getY()-1) instanceof Goal ||
+				maze.getField(robot.getX()+1, robot.getY()) instanceof Goal ||
+				maze.getField(robot.getX(), robot.getY()+1) instanceof Goal ||
+				maze.getField(robot.getX()-1, robot.getY()) instanceof Goal)
 		{
-			System.out.println("A");
+			robot.setX(goal.getX());
+			robot.setY(goal.getY());
+			System.out.println("Freedom!");
+			solved = true;
 		}
-		if(maze.getField(robot.getX()+1, robot.getY()) instanceof Empty)
+		else if(robot.getOrientation() == 'u')
 		{
-			System.out.println("B");
+			if(maze.getField(robot.getX(), robot.getY()-1) instanceof Empty
+			&& maze.getField(robot.getX()+1, robot.getY()) instanceof Wall)
+			{
+				robot.goUp();
+			}
+//			else if(maze.getField(robot.getX(), robot.getY()-1) instanceof Empty
+//					&& maze.getField(robot.getX()+1, robot.getY()+1) instanceof Wall)
+//			{
+//				robot.goUp();
+//				System.out.println("^ around a corner");
+//			}
+			else if(maze.getField(robot.getX(), robot.getY()-1) instanceof Wall)
+			{
+				if(maze.getField(robot.getX()-1, robot.getY()) instanceof Empty)
+				{
+					robot.goLeft();
+				}
+				else if(maze.getField(robot.getX(), robot.getY()+1) instanceof Empty)
+				{
+					robot.goDown();
+				}
+				else if(maze.getField(robot.getX()+1, robot.getY()) instanceof Empty)
+				{
+					robot.goRight();
+				}
+				else
+				{
+					System.out.println("You're stuck!");
+				}
+			}
 		}
-		if(maze.getField(robot.getX(), robot.getY()+1) instanceof Empty)
+
+		else if(robot.getOrientation() == 'r')
 		{
-			System.out.println("C");
+			if(maze.getField(robot.getX()+1, robot.getY()) instanceof Empty
+					&& maze.getField(robot.getX(), robot.getY()+1) instanceof Wall)
+			{
+				robot.goRight();
+			}
+//			else if(maze.getField(robot.getX()+1, robot.getY()) instanceof Empty
+//					&& maze.getField(robot.getX()-1, robot.getY()+1) instanceof Wall)
+//			{
+//				robot.goRight();
+//				System.out.println("^ around a corner");
+//			}
+			else if(maze.getField(robot.getX()+1, robot.getY()) instanceof Wall)
+			{
+				if(maze.getField(robot.getX(), robot.getY()-1) instanceof Empty)
+				{
+					robot.goUp();
+				}
+				else if(maze.getField(robot.getX()-1, robot.getY()) instanceof Empty)
+				{
+					robot.goLeft();
+				}
+				else if(maze.getField(robot.getX(), robot.getY()+1) instanceof Empty)
+				{
+					robot.goDown();
+				}
+				else
+				{
+					System.out.println("You're stuck!");
+				}
+			}
 		}
-		if(maze.getField(robot.getX()-1, robot.getY()) instanceof Empty)
+
+		else if(robot.getOrientation() == 'd')
 		{
-			System.out.println("D");
+			if(maze.getField(robot.getX(), robot.getY()+1) instanceof Empty
+					&& maze.getField(robot.getX()-1, robot.getY()) instanceof Wall)
+			{
+				robot.goDown();
+			}
+//			else if(maze.getField(robot.getX(), robot.getY()+1) instanceof Empty
+//					&& maze.getField(robot.getX()-1, robot.getY()-1) instanceof Wall)
+//			{
+//				robot.goDown();
+//				System.out.println("^ around a corner");
+//			}
+			else if(maze.getField(robot.getX(), robot.getY()+1) instanceof Wall)
+			{
+				if(maze.getField(robot.getX()+1, robot.getY()) instanceof Empty)
+				{
+					robot.goRight();
+				}
+				else if(maze.getField(robot.getX(), robot.getY()-1) instanceof Empty)
+				{
+					robot.goUp();
+				}
+				else if(maze.getField(robot.getX()-1, robot.getY()) instanceof Empty)
+				{
+					robot.goLeft();
+				}
+				else
+				{
+					System.out.println("You're stuck!");
+				}
+			}
 		}
-		System.out.println("X: " + robot.getX() + "\nY: " + robot.getY() + "\n");
+
+		else if(robot.getOrientation() == 'l')
+		{
+			if(maze.getField(robot.getX()-1, robot.getY()) instanceof Empty
+					&& maze.getField(robot.getX(), robot.getY()-1) instanceof Wall)
+			{
+				robot.goLeft();
+			}
+//			else if(maze.getField(robot.getX()-1, robot.getY()) instanceof Empty
+//					&& maze.getField(robot.getX()+1, robot.getY()-1) instanceof Wall)
+//			{
+//				robot.goLeft();
+//				System.out.println("^ around a corner");
+//			}
+			else if(maze.getField(robot.getX()-1, robot.getY()) instanceof Wall)
+			{
+				if(maze.getField(robot.getX(), robot.getY()+1) instanceof Empty)
+				{
+					robot.goDown();
+				}
+				else if(maze.getField(robot.getX()+1, robot.getY()) instanceof Empty)
+				{
+					robot.goRight();
+				}
+				else if(maze.getField(robot.getX(), robot.getY()-1) instanceof Empty)
+				{
+					robot.goUp();
+				}
+				else
+				{
+					System.out.println("You're stuck!");
+				}
+			}
+		}
+
+		System.out.println("\nX: " + robot.getX() + "\nY: " + robot.getY() + "\n");
 	}
 }
