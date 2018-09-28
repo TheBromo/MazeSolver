@@ -1,7 +1,13 @@
 package ch.bbw.controller;
 
-import ch.bbw.model.Fields.*;
+import ch.bbw.model.Fields.Empty;
+import ch.bbw.model.Fields.Field;
+import ch.bbw.model.Fields.Robot;
+import ch.bbw.model.Fields.Wall;
 import ch.bbw.model.Maze;
+import ch.bbw.model.MazeSolver;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -28,6 +34,7 @@ public class FXMLController implements Initializable {
     private GraphicsContext gc;
     private static Image robot, wall, grass, flag;
     private Stage primaryStage;
+    private MazeSolver solver;
 
     //size of each block in pixels
     private int size;
@@ -40,6 +47,9 @@ public class FXMLController implements Initializable {
 
     @FXML
     public void close(MouseEvent evt) {
+        if (solver != null) {
+            solver.setSolved(true);
+        }
         ((Button) evt.getSource()).getScene().getWindow().hide();
     }
 
@@ -63,6 +73,13 @@ public class FXMLController implements Initializable {
     */
     }
 
+    public void externaldraw(Maze maze) {
+        Platform.runLater(() -> {
+            draw(maze);
+            System.out.println("drawing...");
+        });
+    }
+
     private void draw(Maze maze) {
         gc.setFill(Color.DARKGRAY);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -70,19 +87,21 @@ public class FXMLController implements Initializable {
         gc.fillRect(0, 0, maze.getSize() * size, maze.getSize() * size);
         for (int x = 0; x < maze.getSize(); x++) {
             for (int y = 0; y < maze.getSize(); y++) {
+
                 Field field = maze.getField(x, y);
                 if (field instanceof Empty) {
                     gc.drawImage(grass, x * size, y * size, size, size);
                 } else if (field instanceof Wall) {
                     gc.drawImage(wall, x * size, y * size, size, size);
                 } else if (field instanceof Robot) {
-                    gc.drawImage(grass, x * size, y * size, size, size);
-                    gc.drawImage(robot, x * size, y * size, size, size);
+                    gc.drawImage(grass, field.getX() * size, field.getY() * size, size, size);
+                    gc.drawImage(robot, field.getX() * size, field.getY() * size, size, size);
                 } else {
                     gc.drawImage(grass, x * size, y * size, size, size);
                     gc.drawImage(flag, x * size, y * size, size, size);
                 }
             }
+            System.out.println();
         }
     }
 
@@ -101,36 +120,25 @@ public class FXMLController implements Initializable {
         grass = new Image(getClass().getResourceAsStream("/grass.png"));
         flag = new Image(getClass().getResourceAsStream("/flag.png"));
 
-        Maze maze = new Maze(5);
-
-        maze.setField(0, 0, new Wall());
-        maze.setField(1, 0, new Wall());
-        maze.setField(2, 0, new Wall());
-        maze.setField(3, 0, new Wall());
-        maze.setField(4, 0, new Wall());
-        maze.setField(0, 1, new Wall());
-        maze.setField(1, 1, new Robot('u'));
-        maze.setField(2, 1, new Empty());
-        maze.setField(3, 1, new Empty());
-        maze.setField(4, 1, new Wall());
-        maze.setField(0, 2, new Wall());
-        maze.setField(1, 2, new Empty());
-        maze.setField(2, 2, new Empty());
-        maze.setField(3, 2, new Empty());
-        maze.setField(4, 2, new Wall());
-        maze.setField(0, 3, new Wall());
-        maze.setField(1, 3, new Empty());
-        maze.setField(2, 3, new Empty());
-        maze.setField(3, 3, new Empty());
-        maze.setField(4, 3, new Wall());
-        maze.setField(0, 4, new Wall());
-        maze.setField(1, 4, new Wall());
-        maze.setField(2, 4, new Wall());
-        maze.setField(3, 4, new Goal());
-        maze.setField(4, 4, new Wall());
-        draw(maze);
-
     }
 
+    public void setSolver(MazeSolver solver) {
+        this.solver = solver;
+    }
 
+    public void handleStart(ActionEvent actionEvent) {
+        new Thread(new MazeSolver(this)).start();
+    }
+
+    public void handleReset(ActionEvent actionEvent) {
+        if (solver != null) {
+            solver.setSolved(true);
+        }
+    }
+
+    public void handlePause(ActionEvent actionEvent) {
+        if (solver != null) {
+            solver.setPaused(false);
+        }
+    }
 }
