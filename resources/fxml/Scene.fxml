@@ -42,23 +42,23 @@
                     <children>
                         <Pane prefHeight="111.0" prefWidth="198.0">
                             <children>
-                                <Button layoutX="51.0" layoutY="27.0" mnemonicParsing="false" prefHeight="57.0"
-                                        prefWidth="97.0" style="-fx-background-color: #00b894; -fx-text-fill: White;"
-                                        text="Start"/>
+                                <Button layoutX="51.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleStart"
+                                        prefHeight="57.0" prefWidth="97.0"
+                                        style="-fx-background-color: #00b894; -fx-text-fill: White;" text="Start"/>
                             </children>
                         </Pane>
                         <Pane prefHeight="111.0" prefWidth="198.0">
                             <children>
-                                <Button layoutX="51.0" layoutY="27.0" mnemonicParsing="false" prefHeight="57.0"
-                                        prefWidth="97.0" style="-fx-background-color: #fdcb6e; -fx-text-fill: White;"
-                                        text="Pause"/>
+                                <Button layoutX="51.0" layoutY="27.0" mnemonicParsing="false" onAction="#handlePause"
+                                        prefHeight="57.0" prefWidth="97.0"
+                                        style="-fx-background-color: #fdcb6e; -fx-text-fill: White;" text="Pause"/>
                             </children>
                         </Pane>
                         <Pane prefHeight="111.0" prefWidth="198.0">
                             <children>
-                                <Button layoutX="51.0" layoutY="27.0" mnemonicParsing="false" prefHeight="57.0"
-                                        prefWidth="97.0" style="-fx-background-color: #d63031; -fx-text-fill: White;"
-                                        text="Reset"/>
+                                <Button layoutX="51.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleReset"
+                                        prefHeight="57.0" prefWidth="97.0"
+                                        style="-fx-background-color: #d63031; -fx-text-fill: White;" text="Reset"/>
                             </children>
                         </Pane>
                     </children>
