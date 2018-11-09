@@ -1,10 +1,7 @@
 package ch.bbw.model;
 
 import ch.bbw.controller.FXMLController;
-import ch.bbw.model.Fields.Empty;
-import ch.bbw.model.Fields.Goal;
-import ch.bbw.model.Fields.Robot;
-import ch.bbw.model.Fields.Wall;
+import ch.bbw.model.Fields.*;
 
 public class MazeSolver implements Runnable {
     private Maze maze;
@@ -13,6 +10,7 @@ public class MazeSolver implements Runnable {
     private Goal goal;
     private FXMLController controller;
     private boolean paused;
+    private Start start;
 
 
     public MazeSolver(FXMLController controller) {
@@ -21,8 +19,10 @@ public class MazeSolver implements Runnable {
         controller.setSolver(this);
         maze = new Maze(7);
         solved = false;
-        robot = new Robot('u');
         goal = new Goal();
+        start = new Start();
+        robot = maze.getRobot();
+
         maze.setField(0, 0, new Wall());
         maze.setField(1, 0, new Wall());
         maze.setField(2, 0, new Wall());
@@ -31,7 +31,7 @@ public class MazeSolver implements Runnable {
         maze.setField(5, 0, new Wall());
         maze.setField(6, 0, new Wall());
         maze.setField(0, 1, new Wall());
-        maze.setField(1, 1, robot);
+        maze.setField(1, 1, start);
         maze.setField(2, 1, new Empty());
         maze.setField(3, 1, new Empty());
         maze.setField(4, 1, new Empty());
@@ -73,11 +73,14 @@ public class MazeSolver implements Runnable {
         maze.setField(5, 6, new Goal());
         maze.setField(6, 6, new Wall());
 
+        robot.setX(start.getX());
+        robot.setY(start.getY());
+
         System.out.println("X: " + robot.getX() + "\nY: " + robot.getY() + "\n");
     }
 
     public void solve() {
-        while (solved == false) {
+        while (!solved) {
             if (!paused) {
                 step();
                 controller.externaldraw(maze);
