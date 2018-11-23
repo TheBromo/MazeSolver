@@ -15,6 +15,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -22,24 +23,25 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 public class FXMLController implements Initializable {
 
+    private static Image robot, wall, grass, flag;
     @FXML
     VBox vbox;
     @FXML
     HBox header;
     @FXML
     Canvas canvas;
+    private Thread thread;
     private GraphicsContext gc;
-    private static Image robot, wall, grass, flag;
     private Stage primaryStage;
     private MazeSolver solver;
 
+
     //size of each block in pixels
     private int size;
-    private double oldX, oldY, oldCanvasX, oldCanvasY;
-
+    private double oldX, oldY, lastDragX, lastDragY, offsetX, offsetY;
+    private boolean dragInProgress;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -76,13 +78,14 @@ public class FXMLController implements Initializable {
     public void externaldraw(Maze maze) {
         Platform.runLater(() -> {
             draw(maze);
-            System.out.println("drawing...");
         });
     }
 
     private void draw(Maze maze) {
+
         gc.setFill(Color.DARKGRAY);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.translate(offsetX, offsetY);
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, maze.getSize() * size, maze.getSize() * size);
         for (int x = 0; x < maze.getSize(); x++) {
@@ -101,17 +104,19 @@ public class FXMLController implements Initializable {
                     gc.drawImage(flag, x * size, y * size, size, size);
                 }
             }
-            System.out.println();
         }
+        Robot robotObj = maze.getRobot();
+        gc.drawImage(robot, robotObj.getX() * size, robotObj.getY() * size, size, size);
+        //gc.restore();
+        gc.translate(-offsetX, -offsetY);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        dragInProgress = false;
         header.setOnMouseDragged(event -> moveWindow(event, true));
         header.setOnMouseMoved(event -> moveWindow(event, false));
 
-        canvas.setOnMouseDragged(event -> moveCanvas(event, true));
-        canvas.setOnMouseMoved(event -> moveCanvas(event, false));
 
         size = 150;
         gc = canvas.getGraphicsContext2D();
@@ -127,12 +132,16 @@ public class FXMLController implements Initializable {
     }
 
     public void handleStart(ActionEvent actionEvent) {
-        new Thread(new MazeSolver(this)).start();
+        if (thread == null) {
+            thread = new Thread(new MazeSolver(this));
+            thread.start();
+        }
     }
 
     public void handleReset(ActionEvent actionEvent) {
         if (solver != null) {
             solver.setSolved(true);
+            thread = null;
         }
     }
 
@@ -140,5 +149,24 @@ public class FXMLController implements Initializable {
         if (solver != null) {
             solver.setPaused(false);
         }
+    }
+
+
+    public void onScroll(ScrollEvent scrollEvent) {
+        System.out.println("scrolling");
+    }
+
+
+    public void onMousePressed(MouseEvent mouseEvent) {
+        lastDragY = mouseEvent.getY();
+        lastDragX = mouseEvent.getX();
+    }
+
+    public void handleMouseDrag(MouseEvent mouseEvent) {
+        offsetX += mouseEvent.getX() - lastDragX;
+        offsetY += mouseEvent.getY() - lastDragY;
+        lastDragX = mouseEvent.getX();
+        lastDragY = mouseEvent.getY();
+        externaldraw(solver.getMaze());
     }
 }
