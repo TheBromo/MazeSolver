@@ -17,6 +17,6 @@ public class MazeSolverTest
 	@DisplayName("Getting test")
 	public void testGet()
 	{
-        //mazeSolver.solve();
+        //mazeSolver.followWallWithRightHand();
 	}
 }

@@ -124,7 +124,6 @@ public class FXMLController implements Initializable {
         wall = new Image(getClass().getResourceAsStream("/wall.png"));
         grass = new Image(getClass().getResourceAsStream("/grass.png"));
         flag = new Image(getClass().getResourceAsStream("/flag.png"));
-
     }
 
     public void setSolver(MazeSolver solver) {
