@@ -1,58 +1,104 @@
 package ch.bbw.model.Fields;
 
-public class Robot extends Field {
+public class Robot extends Field
+{
     public char orientation;
 
-    public Robot(char orientation) {
+    public Robot(char orientation)
+    {
         this.orientation = orientation;
     }
 
-    public int getDegrees() {
-        int degrees = 0;
-        switch (orientation) {
-            case 'r':
-                degrees = 90;
+    public void goForward()
+    {
+        System.out.println("To glory!");
+        switch(orientation)
+        {
+            case 'u':
+                this.setY(this.getY() - 1);
                 break;
-            case 'l':
-                degrees = 270;
+            case 'r':
+                this.setX(this.getX() + 1);
                 break;
             case 'd':
-                degrees = 180;
+                this.setY(this.getY() + 1);
+                break;
+            case 'l':
+                this.setX(this.getX() - 1);
                 break;
         }
-        return degrees;
     }
 
-
-    public void goUp() {
-        orientation = 'u';
-        this.setY(this.getY() - 1);
-        //System.out.println("Robot goes up");
+    public void goRight()
+    {
+        System.out.println("AfD");
+        switch(orientation)
+        {
+            case 'u':
+                orientation = 'r';
+                break;
+            case 'r':
+                orientation = 'd';
+                break;
+            case 'd':
+                orientation = 'l';
+                break;
+            case 'l':
+                orientation = 'u';
+                break;
+        }
+        goForward();
     }
 
-    public void goRight() {
-        orientation = 'r';
-        this.setX(this.getX() + 1);
-        //System.out.println("Robot goes right");
+    public void goLeft()
+    {
+        System.out.println("Papa Stalin");
+        switch(orientation)
+        {
+            case 'u':
+                orientation = 'l';
+                break;
+            case 'r':
+                orientation = 'u';
+                break;
+            case 'd':
+                orientation = 'r';
+                break;
+            case 'l':
+                orientation = 'd';
+                break;
+        }
+        goForward();
     }
 
-    public void goDown() {
-        orientation = 'd';
-        this.setY(this.getY() + 1);
-        //System.out.println("Robot goes down");
+    public void goBack()
+    {
+        System.out.println("Content Cop");
+        switch(orientation)
+        {
+            case 'u':
+                orientation = 'd';
+                break;
+            case 'r':
+                orientation = 'l';
+                break;
+            case 'd':
+                orientation = 'u';
+                break;
+            case 'l':
+                orientation = 'r';
+                break;
+        }
+        goForward();
     }
 
-    public void goLeft() {
-        orientation = 'l';
-        this.setX(this.getX() - 1);
-        //System.out.println("Robot goes left");
-    }
-
-    public char getOrientation() {
+    public char getOrientation()
+    {
         return orientation;
     }
 
-    public void setOrientation(char orientation) {
+    public void setOrientation(char orientation)
+    {
         this.orientation = orientation;
     }
 }

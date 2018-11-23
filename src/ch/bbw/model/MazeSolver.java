@@ -3,7 +3,8 @@ package ch.bbw.model;
 import ch.bbw.controller.FXMLController;
 import ch.bbw.model.Fields.*;
 
-public class MazeSolver implements Runnable {
+public class MazeSolver implements Runnable
+{
     private Maze maze;
     private boolean solved;
     private Robot robot;
@@ -12,8 +13,8 @@ public class MazeSolver implements Runnable {
     private boolean paused;
     private Start start;
 
-
-    public MazeSolver(FXMLController controller) {
+    public MazeSolver(FXMLController controller)
+    {
         paused = false;
         this.controller = controller;
         controller.setSolver(this);
@@ -79,165 +80,263 @@ public class MazeSolver implements Runnable {
         System.out.println("X: " + robot.getX() + "\nY: " + robot.getY() + "\n");
     }
 
-    public void solve() {
-        while (!solved) {
-            if (!paused) {
+    public void solve()
+    {
+        while (!solved)
+        {
+            if (!paused)
+            {
                 step();
                 controller.externaldraw(maze);
-                try {
+                try
+                {
                     Thread.sleep(1000);
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     e.printStackTrace();
                 }
             }
         }
     }
 
-    public void step() {
+    private void step()
+    {
 
-        if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Goal ||
-                maze.getField(robot.getX() + 1, robot.getY()) instanceof Goal ||
-                maze.getField(robot.getX(), robot.getY() + 1) instanceof Goal ||
-                maze.getField(robot.getX() - 1, robot.getY()) instanceof Goal) {
-            robot.setX(goal.getX());
-            robot.setY(goal.getY());
+        if (robot.getX() == goal.getX() && robot.getY() == goal.getY())
+        {
             System.out.println("Freedom!");
             solved = true;
-        } else if (robot.getOrientation() == 'u') {
-            if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Empty
-                    && maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall) {
-                robot.goUp();
-            }
-//			else if(maze.getField(robot.getX(), robot.getY()-1) instanceof Empty
-//					&& maze.getField(robot.getX()+1, robot.getY()+1) instanceof Wall)
-//			{
-//				robot.goUp();
-//				System.out.println("^ around a corner");
-//			}
-            else if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall) {
-                if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Empty) {
-                    robot.goLeft();
-                } else if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Empty) {
-                    robot.goDown();
-                } else if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Empty) {
+        }
+        else if (robot.getOrientation() == 'u')
+        {
+            if (maze.getField(robot.getX() + 1, robot.getY() + 1) instanceof Wall
+                    || maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall) // Is back right field or right field a wall?
+            {
+                if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall) // Is right field a wall?
+                {
+                    if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall) // Is frontal field a wall?
+                    {
+                        if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall)
+                        {
+                            if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall)
+                            {
+                                System.out.println("Game over man, game over!");
+                                solved = true;
+                            }
+                            else
+                            {
+                                robot.goBack();
+                            }
+                        }
+                        else
+                        {
+                            robot.goLeft();
+                        }
+                    }
+                    else
+                    {
+                        robot.goForward();
+                    }
+                }
+                else
+                {
                     robot.goRight();
-                } else {
-                    System.out.println("You're stuck!");
                 }
             }
-        } else if (robot.getOrientation() == 'r') {
-            if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Empty
-                    && maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall) {
-                robot.goRight();
-            }
-//			else if(maze.getField(robot.getX()+1, robot.getY()) instanceof Empty
-//					&& maze.getField(robot.getX()-1, robot.getY()+1) instanceof Wall)
-//			{
-//				robot.goRight();
-//				System.out.println("^ around a corner");
-//			}
-            else if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall) {
-                if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Empty) {
-                    robot.goUp();
-                } else if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Empty) {
-                    robot.goLeft();
-                } else if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Empty) {
-                    robot.goDown();
-                } else {
-                    System.out.println("You're stuck!");
-                }
-            }
-        } else if (robot.getOrientation() == 'd') {
-            if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Empty
-                    && maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall) {
-                robot.goDown();
-            }
-//			else if(maze.getField(robot.getX(), robot.getY()+1) instanceof Empty
-//					&& maze.getField(robot.getX()-1, robot.getY()-1) instanceof Wall)
-//			{
-//				robot.goDown();
-//				System.out.println("^ around a corner");
-//			}
-            else if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall) {
-                if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Empty) {
-                    robot.goRight();
-                } else if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Empty) {
-                    robot.goUp();
-                } else if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Empty) {
-                    robot.goLeft();
-                } else {
-                    System.out.println("You're stuck!");
-                }
-            }
-        } else if (robot.getOrientation() == 'l') {
-            if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Empty
-                    && maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall) {
-                robot.goLeft();
-            }
-//			else if(maze.getField(robot.getX()-1, robot.getY()) instanceof Empty
-//					&& maze.getField(robot.getX()+1, robot.getY()-1) instanceof Wall)
-//			{
-//				robot.goLeft();
-//				System.out.println("^ around a corner");
-//			}
-            else if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall) {
-                if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Empty) {
-                    robot.goDown();
-                } else if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Empty) {
-                    robot.goRight();
-                } else if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Empty) {
-                    robot.goUp();
-                } else {
-                    System.out.println("You're stuck!");
-                }
+            else
+            {
+                System.out.println("FATAL ERROR");
+                solved = true;
             }
         }
+        else if (robot.getOrientation() == 'r')
+        {
+            if (maze.getField(robot.getX() - 1, robot.getY() + 1) instanceof Wall
+                    || maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall) // Is back right field or right field a wall?
+            {
+                if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall) // Is right field a wall?
+                {
+                    if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall) // Is frontal field a wall?
+                    {
+                        if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall)
+                        {
+                            if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall)
+                            {
+                                System.out.println("Game over man, game over!");
+                                solved = true;
+                            }
+                            else
+                            {
+                                robot.goBack();
+                            }
+                        }
+                        else
+                        {
+                            robot.goLeft();
+                        }
+                    }
+                    else
+                    {
+                        robot.goForward();
+                    }
+                }
+                else
+                {
+                    robot.goRight();
+                }
+            }
+            else
+            {
+                System.out.println("FATAL ERROR");
+                solved = true;
+            }
+        }
+        else if (robot.getOrientation() == 'd')
+        {
+            if (maze.getField(robot.getX() - 1, robot.getY() - 1) instanceof Wall
+                    || maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall) // Is back right field or right field a wall?
+            {
+                if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall) // Is right field a wall?
+                {
+                    if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall) // Is frontal field a wall?
+                    {
+                        if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall)
+                        {
+                            if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall)
+                            {
+                                System.out.println("Game over man, game over!");
+                                solved = true;
+                            }
+                            else
+                            {
+                                robot.goBack();
+                            }
+                        }
+                        else
+                        {
+                            robot.goLeft();
+                        }
+                    }
+                    else
+                    {
+                        robot.goForward();
+                    }
+                }
+                else
+                {
+                    robot.goRight();
+                }
+            }
+            else
+            {
+                System.out.println("FATAL ERROR");
+                solved = true;
+            }
+        }
+        else if (robot.getOrientation() == 'l')
+        {
+            if (maze.getField(robot.getX() + 1, robot.getY() - 1) instanceof Wall
+                    || maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall) // Is back right field or right field a wall?
+            {
+                if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall) // Is right field a wall?
+                {
+                    if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall) // Is frontal field a wall?
+                    {
+                        if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall)
+                        {
+                            if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall)
+                            {
+                                System.out.println("Game over man, game over!");
+                                solved = true;
+                            }
+                            else
+                            {
+                                robot.goBack();
+                            }
+                        }
+                        else
+                        {
+                            robot.goLeft();
+                        }
+                    }
+                    else
+                    {
+                        robot.goForward();
+                    }
+                }
+                else
+                {
+                    robot.goRight();
+                }
+            }
+            else
+            {
+                System.out.println("FATAL ERROR");
+                solved = true;
+            }
+        }
+        else
+        {
+            System.out.println("How can our eyes be real if mirrors aren't real?");
+        }
 
-        //System.out.println("\nX: " + robot.getX() + "\nY: " + robot.getY() + "\n");
+        System.out.println("\n(" + robot.getX() + "|" + robot.getY() + ")\n");
     }
 
-    public Maze getMaze() {
+    public Maze getMaze()
+    {
         return maze;
     }
 
-    public void setMaze(Maze maze) {
+    public void setMaze(Maze maze)
+    {
         this.maze = maze;
     }
 
-    public boolean isSolved() {
+    public boolean isSolved()
+    {
         return solved;
     }
 
-    public void setSolved(boolean solved) {
+    public void setSolved(boolean solved)
+    {
         this.solved = solved;
     }
 
-    public Robot getRobot() {
+    public Robot getRobot()
+    {
         return robot;
     }
 
-    public void setRobot(Robot robot) {
+    public void setRobot(Robot robot)
+    {
         this.robot = robot;
     }
 
-    public Goal getGoal() {
+    public Goal getGoal()
+    {
         return goal;
     }
 
-    public void setGoal(Goal goal) {
+    public void setGoal(Goal goal)
+    {
         this.goal = goal;
     }
 
-    public boolean isPaused() {
+    public boolean isPaused()
+    {
         return paused;
     }
 
-    public void setPaused(boolean paused) {
+    public void setPaused(boolean paused)
+    {
         this.paused = paused;
     }
 
     @Override
-    public void run() {
+    public void run()
+    {
         solve();
     }
 }

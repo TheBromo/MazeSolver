@@ -11,7 +11,7 @@ public class Maze
 
     public Maze(int size)
     {
-        robot = new Robot('u');
+        robot = new Robot('d');
         this.size = size;
         fields = new Field[size * size];
         initFields();
