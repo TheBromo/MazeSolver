@@ -76,8 +76,6 @@ public class MazeSolver implements Runnable
 
         robot.setX(start.getX());
         robot.setY(start.getY());
-
-        System.out.println("X: " + robot.getX() + "\nY: " + robot.getY() + "\n");
     }
 
     public void followWallWithRightHand()
@@ -102,6 +100,7 @@ public class MazeSolver implements Runnable
 
     private void step()
     {
+        System.out.println("\n(" + robot.getX() + "|" + robot.getY() + ")\n");
 
         if (robot.getX() == goal.getX() && robot.getY() == goal.getY())
         {
@@ -280,8 +279,6 @@ public class MazeSolver implements Runnable
         {
             System.out.println("How can our eyes be real if mirrors aren't real?");
         }
-
-        System.out.println("\n(" + robot.getX() + "|" + robot.getY() + ")\n");
     }
 
     public Maze getMaze()
