@@ -31,7 +31,7 @@ public class Robot extends Field
 
     public void goRight()
     {
-        System.out.println("AfD");
+        System.out.println("Going right!");
         switch(orientation)
         {
             case 'u':
@@ -52,7 +52,7 @@ public class Robot extends Field
 
     public void goLeft()
     {
-        System.out.println("Papa Stalin");
+        System.out.println("Going left!");
         switch(orientation)
         {
             case 'u':
@@ -73,7 +73,7 @@ public class Robot extends Field
 
     public void goBack()
     {
-        System.out.println("Content Cop");
+        System.out.println("Going back!");
         switch(orientation)
         {
             case 'u':
