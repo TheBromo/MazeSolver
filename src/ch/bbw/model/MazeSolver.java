@@ -137,9 +137,9 @@ public class MazeSolver implements Runnable
         {
             if (!paused)
             {
-                //rightHandAlgorithmStep();
-                pledgeAlgorithmStep();
-                controller.externaldraw(maze);
+                rightHandAlgorithmStep();
+                //pledgeAlgorithmStep();
+                controller.externalDraw(maze);
                 try
                 {
                     Thread.sleep(500);
