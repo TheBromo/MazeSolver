@@ -1,21 +1,27 @@
 package ch.bbw.model.Fields;
 
-public class Field {
-    private int x, y;
+import ch.bbw.model.Position;
 
-    public int getX() {
-        return x;
+public class Field
+{
+    private Position position;
+
+    public Field()
+    {
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public Field(Position position)
+    {
+        this.position = position;
     }
 
-    public int getY() {
-        return y;
+    public Position getPosition()
+    {
+        return position;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setPosition(Position position)
+    {
+        this.position = position;
     }
 }

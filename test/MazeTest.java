@@ -1,4 +1,5 @@
 import ch.bbw.model.Maze;
+import ch.bbw.model.Position;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class MazeTest {
-    static Maze maze;
+    private static Maze maze;
 
 
     @BeforeAll
@@ -18,8 +19,8 @@ public class MazeTest {
     @Test
     @DisplayName("Getting test")
     public void testGet() {
-        if (maze.getField(0, 0) == null) {
-            fail("Test failed  " + maze.getField(0, 0));
+        if (maze.getField(new Position(0, 0)) == null) {
+            fail("Test failed  " + maze.getField(new Position(0, 0)));
         }
 
 

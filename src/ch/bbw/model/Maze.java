@@ -11,7 +11,7 @@ public class Maze
 
     public Maze(int size)
     {
-        robot = new Robot('u');
+        robot = new Robot();
         this.size = size;
         fields = new Field[size * size];
         initFields();
@@ -25,9 +25,9 @@ public class Maze
         }
     }
 
-    public Field getField(int x, int y)
+    public Field getField(Position position)
     {
-        return fields[x + y * size];
+        return fields[position.getX() + position.getY() * size];
     }
 
     public int getSize()
@@ -35,11 +35,10 @@ public class Maze
         return size;
     }
 
-    public void setField(int x, int y, Field field)
+    public void setField(Position position, Field field)
     {
-        fields[x + y * size] = field;
-        field.setX(x);
-        field.setY(y);
+        fields[position.getX() + position.getY() * size] = field;
+        field.setPosition(position);
     }
 
     public Field[] getFields()

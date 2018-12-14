@@ -5,130 +5,144 @@ import ch.bbw.model.Fields.*;
 
 public class MazeSolver implements Runnable
 {
-    private Maze maze;
-    private boolean solved;
-    private Robot robot;
-    private Goal goal;
     private FXMLController controller;
-    private boolean paused;
+    private Maze maze;
+    private boolean solved, paused, pledge;
+
+    private Robot robot;
     private Start start;
-    private int degrees;
+    private Goal goal;
+
+    private final Direction UP, RIGHT, DOWN, LEFT;
+    private int turnedDegrees;
 
     public MazeSolver(FXMLController controller)
     {
-        degrees = 0;
-        paused = false;
         this.controller = controller;
         controller.setSolver(this);
         maze = new Maze(10);
         solved = false;
+        paused = false;
+        pledge = true;
+
+        robot = maze.getRobot();
         goal = new Goal();
         start = new Start();
-        robot = maze.getRobot();
 
-        maze.setField(0, 0, new Wall());
-        maze.setField(1, 0, new Wall());
-        maze.setField(2, 0, new Wall());
-        maze.setField(3, 0, new Wall());
-        maze.setField(4, 0, new Wall());
-        maze.setField(5, 0, new Wall());
-        maze.setField(6, 0, new Wall());
-        maze.setField(7, 0, new Wall());
-        maze.setField(8, 0, new Wall());
-        maze.setField(9, 0, new Wall());
-        maze.setField(0, 1, new Wall());
-        maze.setField(1, 1, new Empty());
-        maze.setField(2, 1, new Empty());
-        maze.setField(3, 1, new Empty());
-        maze.setField(4, 1, new Empty());
-        maze.setField(5, 1, new Empty());
-        maze.setField(6, 1, new Empty());
-        maze.setField(7, 1, new Empty());
-        maze.setField(8, 1, new Empty());
-        maze.setField(9, 1, new Wall());
-        maze.setField(0, 2, new Wall());
-        maze.setField(1, 2, new Empty());
-        maze.setField(2, 2, new Empty());
-        maze.setField(3, 2, new Empty());
-        maze.setField(4, 2, new Empty());
-        maze.setField(5, 2, new Empty());
-        maze.setField(6, 2, new Empty());
-        maze.setField(7, 2, new Empty());
-        maze.setField(8, 2, new Empty());
-        maze.setField(9, 2, new Wall());
-        maze.setField(0, 3, new Wall());
-        maze.setField(1, 3, new Empty());
-        maze.setField(2, 3, new Empty());
-        maze.setField(3, 3, new Wall());
-        maze.setField(4, 3, new Wall());
-        maze.setField(5, 3, new Wall());
-        maze.setField(6, 3, new Wall());
-        maze.setField(7, 3, new Empty());
-        maze.setField(8, 3, new Empty());
-        maze.setField(9, 3, new Wall());
-        maze.setField(0, 4, new Wall());
-        maze.setField(1, 4, new Empty());
-        maze.setField(2, 4, start);
-        maze.setField(3, 4, new Wall());
-        maze.setField(4, 4, new Empty());
-        maze.setField(5, 4, new Empty());
-        maze.setField(6, 4, new Wall());
-        maze.setField(7, 4, new Empty());
-        maze.setField(8, 4, new Empty());
-        maze.setField(9, 4, new Wall());
-        maze.setField(0, 5, new Wall());
-        maze.setField(1, 5, new Empty());
-        maze.setField(2, 5, new Empty());
-        maze.setField(3, 5, new Wall());
-        maze.setField(4, 5, new Empty());
-        maze.setField(5, 5, new Empty());
-        maze.setField(6, 5, new Wall());
-        maze.setField(7, 5, new Empty());
-        maze.setField(8, 5, new Empty());
-        maze.setField(9, 5, new Wall());
-        maze.setField(0, 6, new Wall());
-        maze.setField(1, 6, new Empty());
-        maze.setField(2, 6, new Empty());
-        maze.setField(3, 6, new Wall());
-        maze.setField(4, 6, new Wall());
-        maze.setField(5, 6, new Wall());
-        maze.setField(6, 6, new Wall());
-        maze.setField(7, 6, new Empty());
-        maze.setField(8, 6, new Empty());
-        maze.setField(9, 6, new Wall());
-        maze.setField(0, 7, new Wall());
-        maze.setField(1, 7, new Empty());
-        maze.setField(2, 7, new Empty());
-        maze.setField(3, 7, new Empty());
-        maze.setField(4, 7, new Empty());
-        maze.setField(5, 7, new Empty());
-        maze.setField(6, 7, new Empty());
-        maze.setField(7, 7, new Empty());
-        maze.setField(8, 7, new Empty());
-        maze.setField(9, 7, new Wall());
-        maze.setField(0, 8, new Wall());
-        maze.setField(1, 8, new Empty());
-        maze.setField(2, 8, new Empty());
-        maze.setField(3, 8, new Empty());
-        maze.setField(4, 8, new Empty());
-        maze.setField(5, 8, new Empty());
-        maze.setField(6, 8, new Empty());
-        maze.setField(7, 8, new Empty());
-        maze.setField(8, 8, goal);
-        maze.setField(9, 8, new Wall());
-        maze.setField(0, 9, new Wall());
-        maze.setField(1, 9, new Wall());
-        maze.setField(2, 9, new Wall());
-        maze.setField(3, 9, new Wall());
-        maze.setField(4, 9, new Wall());
-        maze.setField(5, 9, new Wall());
-        maze.setField(6, 9, new Wall());
-        maze.setField(7, 9, new Wall());
-        maze.setField(8, 9, new Wall());
-        maze.setField(9, 9, new Wall());
+        UP = new Direction(new Position(0, -1), new Position(1, 0), new Position(0, 1), new Position(-1, 0), new Position(1, 1));
+        RIGHT = new Direction(new Position(1, 0), new Position(0, 1), new Position(-1, 0), new Position(0, -1), new Position(-1, 1));
+        DOWN = new Direction(new Position(0, 1), new Position(-1, 0), new Position(0, -1), new Position(1, 0), new Position(-1, -1));
+        LEFT = new Direction(new Position(-1, 0), new Position(0, -1), new Position(1, 0), new Position(0, 1), new Position(1, -1));
 
-        robot.setX(start.getX());
-        robot.setY(start.getY());
+        turnedDegrees = 0;
+        robot.setOrientation(UP);
+
+        for(int i=0; i<10; i++)
+        {
+            maze.setField(new Position(i,0), new Wall());
+        }
+
+        maze.setField(new Position(0, 1), new Wall());
+        for(int i=1; i<9; i++)
+        {
+            maze.setField(new Position(i,1), new Empty());
+        }
+        maze.setField(new Position(9, 1), new Wall());
+
+        maze.setField(new Position(0, 2), new Wall());
+        for(int i=1; i<9; i++)
+        {
+            maze.setField(new Position(i,2), new Empty());
+        }
+        maze.setField(new Position(9, 2), new Wall());
+
+        maze.setField(new Position(0, 3), new Wall());
+        maze.setField(new Position(1, 3), new Empty());
+        maze.setField(new Position(2, 3), new Empty());
+        maze.setField(new Position(3, 3), new Wall());
+        maze.setField(new Position(4, 3), new Wall());
+        maze.setField(new Position(5, 3), new Wall());
+        maze.setField(new Position(6, 3), new Wall());
+        maze.setField(new Position(7, 3), new Empty());
+        maze.setField(new Position(8, 3), new Empty());
+        maze.setField(new Position(9, 3), new Wall());
+        maze.setField(new Position(0, 4), new Wall());
+        maze.setField(new Position(1, 4), new Empty());
+        maze.setField(new Position(2, 4), start);
+        maze.setField(new Position(3, 4), new Wall());
+        maze.setField(new Position(4, 4), new Empty());
+        maze.setField(new Position(5, 4), new Empty());
+        maze.setField(new Position(6, 4), new Wall());
+        maze.setField(new Position(7, 4), new Empty());
+        maze.setField(new Position(8, 4), new Empty());
+        maze.setField(new Position(9, 4), new Wall());
+        maze.setField(new Position(0, 5), new Wall());
+        maze.setField(new Position(1, 5), new Empty());
+        maze.setField(new Position(2, 5), new Empty());
+        maze.setField(new Position(3, 5), new Wall());
+        maze.setField(new Position(4, 5), new Empty());
+        maze.setField(new Position(5, 5), new Empty());
+        maze.setField(new Position(6, 5), new Wall());
+        maze.setField(new Position(7, 5), new Empty());
+        maze.setField(new Position(8, 5), new Empty());
+        maze.setField(new Position(9, 5), new Wall());
+        maze.setField(new Position(0, 6), new Wall());
+        maze.setField(new Position(1, 6), new Empty());
+        maze.setField(new Position(2, 6), new Empty());
+        maze.setField(new Position(3, 6), new Wall());
+        maze.setField(new Position(4, 6), new Wall());
+        maze.setField(new Position(5, 6), new Wall());
+        maze.setField(new Position(6, 6), new Wall());
+        maze.setField(new Position(7, 6), new Empty());
+        maze.setField(new Position(8, 6), new Empty());
+        maze.setField(new Position(9, 6), new Wall());
+
+        maze.setField(new Position(0, 7), new Wall());
+        for(int i=1; i<9; i++)
+        {
+            maze.setField(new Position(i,7), new Empty());
+        }
+        maze.setField(new Position(9, 7), new Wall());
+
+        maze.setField(new Position(0, 8), new Wall());
+        for(int i=1; i<8; i++)
+        {
+            maze.setField(new Position(i,8), new Empty());
+        }
+        maze.setField(new Position(8, 8), goal);
+        maze.setField(new Position(9, 8), new Wall());
+
+        for(int i=0; i<10; i++)
+        {
+            maze.setField(new Position(i,9), new Wall());
+        }
+
+        robot.setPosition(start.getPosition());
+    }
+
+    private void turnRight(Direction currentOrientation)
+    {
+        if(currentOrientation == UP)
+        {
+            robot.setOrientation(RIGHT);
+        }
+        else if(currentOrientation == RIGHT)
+        {
+            robot.setOrientation(DOWN);
+        }
+        else if(currentOrientation == DOWN)
+        {
+            robot.setOrientation(LEFT);
+        }
+        else if(currentOrientation == LEFT)
+        {
+            robot.setOrientation(UP);
+        }
+    }
+
+    private Position combinePositions(Position first, Position second)
+    {
+        return new Position(first.getX()+second.getX(), first.getY()+second.getY());
     }
 
     public void solve()
@@ -137,13 +151,13 @@ public class MazeSolver implements Runnable
         {
             if (!paused)
             {
-                //rightHandAlgorithmStep();
-                pledgeAlgorithmStep();
+                step();
                 controller.externaldraw(maze);
                 try
                 {
                     Thread.sleep(500);
-                } catch (InterruptedException e)
+                }
+                catch (InterruptedException e)
                 {
                     e.printStackTrace();
                 }
@@ -151,7 +165,87 @@ public class MazeSolver implements Runnable
         }
     }
 
-    private void rightHandAlgorithmStep()
+    // boolean pledge: Is it used inside the pledge algorithm?
+    private void step()
+    {
+        System.out.println("\n(" + robot.getPosition().getX() + "|" + robot.getPosition().getY() + ")\n");
+
+        if (robot.getPosition().getX() == goal.getPosition().getX() && robot.getPosition().getY() == goal.getPosition().getY())
+        {
+            System.out.println("Freedom!");
+            solved = true;
+        }
+        else
+        {
+            Direction orientation = robot.getOrientation();
+
+            Field frontField = maze.getField(combinePositions(orientation.getFront(), robot.getPosition()));
+            Field rightField = maze.getField(combinePositions(orientation.getRight(), robot.getPosition()));
+            Field backField = maze.getField(combinePositions(orientation.getBack(), robot.getPosition()));
+            Field leftField = maze.getField(combinePositions(orientation.getLeft(), robot.getPosition()));
+            Field rightBackField = maze.getField(combinePositions(orientation.getRightBack(), robot.getPosition()));
+
+            if(pledge && turnedDegrees == 0 && !(frontField instanceof Wall))
+            {
+                robot.goForward();
+            }
+            else
+            {
+                // Is RIGHT field or RIGHT BACK field a wall or the pledge algorithm being used?
+                if (pledge || rightBackField instanceof Wall || rightField instanceof Wall)
+                {
+                    // Is RIGHT field a wall?
+                    if (pledge || rightField instanceof Wall)
+                    {
+                        // Is frontal field a wall?
+                        if (frontField instanceof Wall)
+                        {
+                            if (leftField instanceof Wall)
+                            {
+                                if (backField instanceof Wall)
+                                {
+                                    System.out.println("I'm surrounded!");
+                                    solved = true;
+                                    return;
+                                }
+                                else
+                                {
+                                    turnRight(orientation);
+                                    turnRight(orientation);
+                                    turnedDegrees += 180;
+                                }
+                            }
+                            else
+                            {
+                                turnRight(orientation);
+                                turnRight(orientation);
+                                turnRight(orientation);
+                                turnedDegrees -= 90;
+                            }
+                        }
+                        else
+                        {
+                            // Go forward
+                        }
+                    }
+                    else
+                    {
+                        turnRight(orientation);
+                        turnedDegrees += 90;
+                    }
+
+                    robot.goForward();
+                }
+                else
+                {
+                    System.out.println("I'm in the middle of nowhere!");
+                    solved = true;
+                }
+            }
+        }
+    }
+
+    /*private void pledgeAlgorithmStep()
     {
         System.out.println("\n(" + robot.getX() + "|" + robot.getY() + ")\n");
 
@@ -162,233 +256,10 @@ public class MazeSolver implements Runnable
         }
         else if (robot.getOrientation() == 'u')
         {
-            if (maze.getField(robot.getX() + 1, robot.getY() + 1) instanceof Wall
-                    || maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall) // Is back right field or right field a wall?
+            // Is turnedDegrees not zero?
+            if (robot.getTurnedDegrees() != 0 || maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall)
             {
-                if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall) // Is right field a wall?
-                {
-                    if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall) // Is frontal field a wall?
-                    {
-                        if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall)
-                        {
-                            if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall)
-                            {
-                                System.out.println("Game over man, game over!");
-                                solved = true;
-                            }
-                            else
-                            {
-                                robot.goBack();
-                            }
-                        }
-                        else
-                        {
-                            robot.goLeft();
-                        }
-                    }
-                    else
-                    {
-                        robot.goForward();
-                    }
-                }
-                else
-                {
-                    robot.goRight();
-                }
-            }
-            else
-            {
-                System.out.println("FATAL ERROR");
-                solved = true;
-            }
-        }
-        else if (robot.getOrientation() == 'r')
-        {
-            if (maze.getField(robot.getX() - 1, robot.getY() + 1) instanceof Wall
-                    || maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall) // Is back right field or right field a wall?
-            {
-                if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall) // Is right field a wall?
-                {
-                    if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall) // Is frontal field a wall?
-                    {
-                        if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall)
-                        {
-                            if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall)
-                            {
-                                System.out.println("Game over man, game over!");
-                                solved = true;
-                            }
-                            else
-                            {
-                                robot.goBack();
-                            }
-                        }
-                        else
-                        {
-                            robot.goLeft();
-                        }
-                    }
-                    else
-                    {
-                        robot.goForward();
-                    }
-                }
-                else
-                {
-                    robot.goRight();
-                }
-            }
-            else
-            {
-                System.out.println("FATAL ERROR");
-                solved = true;
-            }
-        }
-        else if (robot.getOrientation() == 'd')
-        {
-            if (maze.getField(robot.getX() - 1, robot.getY() - 1) instanceof Wall
-                    || maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall) // Is back right field or right field a wall?
-            {
-                if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall) // Is right field a wall?
-                {
-                    if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall) // Is frontal field a wall?
-                    {
-                        if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall)
-                        {
-                            if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall)
-                            {
-                                System.out.println("Game over man, game over!");
-                                solved = true;
-                            }
-                            else
-                            {
-                                robot.goBack();
-                            }
-                        }
-                        else
-                        {
-                            robot.goLeft();
-                        }
-                    }
-                    else
-                    {
-                        robot.goForward();
-                    }
-                }
-                else
-                {
-                    robot.goRight();
-                }
-            }
-            else
-            {
-                System.out.println("FATAL ERROR");
-                solved = true;
-            }
-        }
-        else if (robot.getOrientation() == 'l')
-        {
-            if (maze.getField(robot.getX() + 1, robot.getY() - 1) instanceof Wall
-                    || maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall) // Is back right field or right field a wall?
-            {
-                if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall) // Is right field a wall?
-                {
-                    if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall) // Is frontal field a wall?
-                    {
-                        if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall)
-                        {
-                            if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall)
-                            {
-                                System.out.println("Game over man, game over!");
-                                solved = true;
-                            }
-                            else
-                            {
-                                robot.goBack();
-                            }
-                        }
-                        else
-                        {
-                            robot.goLeft();
-                        }
-                    }
-                    else
-                    {
-                        robot.goForward();
-                    }
-                }
-                else
-                {
-                    robot.goRight();
-                }
-            }
-            else
-            {
-                System.out.println("FATAL ERROR");
-                solved = true;
-            }
-        }
-        else
-        {
-            System.out.println("How can our eyes be real if mirrors aren't real?");
-        }
-    }
-
-    private void pledgeAlgorithmStep()
-    {
-        System.out.println("\n(" + robot.getX() + "|" + robot.getY() + ")\n");
-
-        if (robot.getX() == goal.getX() && robot.getY() == goal.getY())
-        {
-            System.out.println("Freedom!");
-            solved = true;
-        }
-        else if (robot.getOrientation() == 'u')
-        {
-            if (degrees != 0 || maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall)
-            {
-                if (maze.getField(robot.getX() + 1, robot.getY() + 1) instanceof Wall
-                        || maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall) // Is back right field or right field a wall?
-                {
-                    if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall) // Is right field a wall?
-                    {
-                        if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall) // Is frontal field a wall?
-                        {
-                            if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall)
-                            {
-                                if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall)
-                                {
-                                    System.out.println("Game over man, game over!");
-                                    solved = true;
-                                }
-                                else
-                                {
-                                    robot.goBack();
-                                    degrees -= 180;
-                                }
-                            }
-                            else
-                            {
-                                robot.goLeft();
-                                degrees -= 90;
-                            }
-                        }
-                        else
-                        {
-                            robot.goForward();
-                        }
-                    }
-                    else
-                    {
-                        robot.goRight();
-                        degrees += 90;
-                    }
-                }
-                else
-                {
-                    System.out.println("FATAL ERROR");
-                    solved = true;
-                }
+                rightHandAlgorithmStep(true);
             }
             else
             {
@@ -397,50 +268,10 @@ public class MazeSolver implements Runnable
         }
         else if (robot.getOrientation() == 'r')
         {
-            if (degrees != 0 || maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall)
+            // Is turnedDegrees not zero?
+            if (robot.getTurnedDegrees() != 0 || maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall)
             {
-                if (maze.getField(robot.getX() - 1, robot.getY() + 1) instanceof Wall
-                        || maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall) // Is back right field or right field a wall?
-                {
-                    if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall) // Is right field a wall?
-                    {
-                        if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall) // Is frontal field a wall?
-                        {
-                            if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall)
-                            {
-                                if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall)
-                                {
-                                    System.out.println("Game over man, game over!");
-                                    solved = true;
-                                }
-                                else
-                                {
-                                    robot.goBack();
-                                    degrees -= 180;
-                                }
-                            }
-                            else
-                            {
-                                robot.goLeft();
-                                degrees -= 90;
-                            }
-                        }
-                        else
-                        {
-                            robot.goForward();
-                        }
-                    }
-                    else
-                    {
-                        robot.goRight();
-                        degrees += 90;
-                    }
-                }
-                else
-                {
-                    System.out.println("FATAL ERROR");
-                    solved = true;
-                }
+                rightHandAlgorithmStep(true);
             }
             else
             {
@@ -449,50 +280,10 @@ public class MazeSolver implements Runnable
         }
         else if (robot.getOrientation() == 'd')
         {
-            if (degrees != 0 || maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall)
+            // Is turnedDegrees not zero?
+            if (robot.getTurnedDegrees() != 0 || maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall)
             {
-                if (maze.getField(robot.getX() - 1, robot.getY() - 1) instanceof Wall
-                        || maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall) // Is back right field or right field a wall?
-                {
-                    if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall) // Is right field a wall?
-                    {
-                        if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall) // Is frontal field a wall?
-                        {
-                            if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall)
-                            {
-                                if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall)
-                                {
-                                    System.out.println("Game over man, game over!");
-                                    solved = true;
-                                }
-                                else
-                                {
-                                    robot.goBack();
-                                    degrees -= 180;
-                                }
-                            }
-                            else
-                            {
-                                robot.goLeft();
-                                degrees -= 90;
-                            }
-                        }
-                        else
-                        {
-                            robot.goForward();
-                        }
-                    }
-                    else
-                    {
-                        robot.goRight();
-                        degrees += 90;
-                    }
-                }
-                else
-                {
-                    System.out.println("FATAL ERROR");
-                    solved = true;
-                }
+                rightHandAlgorithmStep(true);
             }
             else
             {
@@ -501,50 +292,10 @@ public class MazeSolver implements Runnable
         }
         else if (robot.getOrientation() == 'l')
         {
-            if (degrees != 0 || maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall)
+            // Is turnedDegrees not zero?
+            if (robot.getTurnedDegrees() != 0 || maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall)
             {
-                if (maze.getField(robot.getX() + 1, robot.getY() - 1) instanceof Wall
-                        || maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall) // Is back right field or right field a wall?
-                {
-                    if (maze.getField(robot.getX(), robot.getY() - 1) instanceof Wall) // Is right field a wall?
-                    {
-                        if (maze.getField(robot.getX() - 1, robot.getY()) instanceof Wall) // Is frontal field a wall?
-                        {
-                            if (maze.getField(robot.getX(), robot.getY() + 1) instanceof Wall)
-                            {
-                                if (maze.getField(robot.getX() + 1, robot.getY()) instanceof Wall)
-                                {
-                                    System.out.println("Game over man, game over!");
-                                    solved = true;
-                                }
-                                else
-                                {
-                                    robot.goBack();
-                                    degrees -= 180;
-                                }
-                            }
-                            else
-                            {
-                                robot.goLeft();
-                                degrees -= 90;
-                            }
-                        }
-                        else
-                        {
-                            robot.goForward();
-                        }
-                    }
-                    else
-                    {
-                        robot.goRight();
-                        degrees += 90;
-                    }
-                }
-                else
-                {
-                    System.out.println("FATAL ERROR");
-                    solved = true;
-                }
+                rightHandAlgorithmStep(true);
             }
             else
             {
@@ -555,7 +306,7 @@ public class MazeSolver implements Runnable
         {
             System.out.println("How can our eyes be real if mirrors aren't real?");
         }
-    }
+    }*/
 
     public Maze getMaze()
     {

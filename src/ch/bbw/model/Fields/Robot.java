@@ -1,104 +1,42 @@
 package ch.bbw.model.Fields;
 
+import ch.bbw.model.Direction;
+import ch.bbw.model.Position;
+
 public class Robot extends Field
 {
-    public char orientation;
+    private Direction orientation;
+    private int turnedDegrees;
 
-    public Robot(char orientation)
+    public Robot()
     {
-        this.orientation = orientation;
+        super();
+        turnedDegrees = 0;
     }
 
     public void goForward()
     {
         System.out.println("To glory!");
-        switch(orientation)
-        {
-            case 'u':
-                this.setY(this.getY() - 1);
-                break;
-            case 'r':
-                this.setX(this.getX() + 1);
-                break;
-            case 'd':
-                this.setY(this.getY() + 1);
-                break;
-            case 'l':
-                this.setX(this.getX() - 1);
-                break;
-        }
+        setPosition(new Position(getPosition().getX()+orientation.getFront().getX(), getPosition().getY()+orientation.getFront().getY()));
     }
 
-    public void goRight()
-    {
-        System.out.println("Going right!");
-        switch(orientation)
-        {
-            case 'u':
-                orientation = 'r';
-                break;
-            case 'r':
-                orientation = 'd';
-                break;
-            case 'd':
-                orientation = 'l';
-                break;
-            case 'l':
-                orientation = 'u';
-                break;
-        }
-        goForward();
-    }
-
-    public void goLeft()
-    {
-        System.out.println("Going left!");
-        switch(orientation)
-        {
-            case 'u':
-                orientation = 'l';
-                break;
-            case 'r':
-                orientation = 'u';
-                break;
-            case 'd':
-                orientation = 'r';
-                break;
-            case 'l':
-                orientation = 'd';
-                break;
-        }
-        goForward();
-    }
-
-    public void goBack()
-    {
-        System.out.println("Going back!");
-        switch(orientation)
-        {
-            case 'u':
-                orientation = 'd';
-                break;
-            case 'r':
-                orientation = 'l';
-                break;
-            case 'd':
-                orientation = 'u';
-                break;
-            case 'l':
-                orientation = 'r';
-                break;
-        }
-        goForward();
-    }
-
-    public char getOrientation()
+    public Direction getOrientation()
     {
         return orientation;
     }
 
-    public void setOrientation(char orientation)
+    public void setOrientation(Direction orientation)
     {
         this.orientation = orientation;
+    }
+
+    public int getTurnedDegrees()
+    {
+        return turnedDegrees;
+    }
+
+    public void setTurnedDegrees(int turnedDegrees)
+    {
+        this.turnedDegrees = turnedDegrees;
     }
 }
