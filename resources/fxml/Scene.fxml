@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="vbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity" prefHeight="860.0" prefWidth="1369.0" xmlns="http://javafx.com/javafx/8"
+      minWidth="-Infinity" prefHeight="855.0" prefWidth="1369.0" xmlns="http://javafx.com/javafx/8"
       fx:controller="ch.bbw.controller.FXMLController">
     <children>
         <HBox fx:id="header" prefHeight="31.0" prefWidth="900.0" styleClass="title-bar">
@@ -40,35 +40,47 @@
                 <VBox prefHeight="812.0" prefWidth="0.0" style="-fx-background-color: #dfe6e9;" styleClass="sidepanel"
                       HBox.hgrow="ALWAYS">
                     <children>
-                        <Pane prefHeight="111.0" prefWidth="198.0">
-                            <children>
-                                <Button layoutX="51.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleStart"
-                                        prefHeight="57.0" prefWidth="97.0"
-                                        style="-fx-background-color: #00b894; -fx-text-fill: White;" text="Start"/>
-                            </children>
-                        </Pane>
-                        <Pane prefHeight="111.0" prefWidth="198.0">
-                            <children>
-                                <Button layoutX="51.0" layoutY="27.0" mnemonicParsing="false" onAction="#handlePause"
-                                        prefHeight="57.0" prefWidth="97.0"
-                                        style="-fx-background-color: #fdcb6e; -fx-text-fill: White;" text="Pause"/>
-                            </children>
-                        </Pane>
-                        <Pane prefHeight="111.0" prefWidth="198.0">
-                            <children>
-                                <Button layoutX="51.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleReset"
-                                        prefHeight="57.0" prefWidth="97.0"
-                                        style="-fx-background-color: #d63031; -fx-text-fill: White;" text="Reset"/>
-                            </children>
-                        </Pane>
+                        <Button fx:id="startButton" mnemonicParsing="false" onAction="#handleStart" prefHeight="57.0"
+                                prefWidth="97.0" style="-fx-background-color: #00b894; -fx-text-fill: White;"
+                                text="Start">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets left="50.0" top="50.0"/>
+                            </VBox.margin>
+                        </Button>
+                        <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#handlePause" prefHeight="57.0"
+                                prefWidth="97.0" style="-fx-background-color: #fdcb6e; -fx-text-fill: White;"
+                                text="Pause">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets left="50.0" top="50.0"/>
+                            </VBox.margin>
+                        </Button>
+                        <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleReset" prefHeight="57.0"
+                                prefWidth="97.0" style="-fx-background-color: #d63031; -fx-text-fill: White;"
+                                text="Reset">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets left="50.0" top="50.0"/>
+                            </VBox.margin>
+                        </Button>
+                        <CheckBox fx:id="kidsMode" mnemonicParsing="false" prefHeight="17.0" prefWidth="120.0"
+                                  text="Kinder Modus">
+                            <VBox.margin>
+                                <Insets left="50.0" top="50.0"/>
+                            </VBox.margin>
+                        </CheckBox>
                     </children>
                 </VBox>
                 <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
-                    <children>
-                        <Canvas fx:id="canvas" height="812.0" onMousePressed="#onMousePressed"
-                                onMouseDragged="#handleMouseDrag" onScroll="#onScroll" width="1171.0"
-                                VBox.vgrow="ALWAYS"/>
-                    </children>
+                    <Canvas fx:id="canvas" height="812.0" onMouseDragged="#handleMouseDrag"
+                            onMousePressed="#onMousePressed" width="1171.0" VBox.vgrow="ALWAYS"/>
                 </VBox>
             </children>
         </HBox>
