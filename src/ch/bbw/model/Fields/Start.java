@@ -1,4 +1,11 @@
 package ch.bbw.model.Fields;
 
-public class Start extends Field {
+import ch.bbw.model.Position;
+
+public class Start extends Field
+{
+    public Start(Position position)
+    {
+        super(position);
+    }
 }

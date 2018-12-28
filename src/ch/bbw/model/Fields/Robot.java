@@ -6,17 +6,14 @@ import ch.bbw.model.Position;
 public class Robot extends Field
 {
     private Direction orientation;
-    private int turnedDegrees;
 
-    public Robot()
+    public Robot(Position startPosition)
     {
-        super();
-        turnedDegrees = 0;
+        super(startPosition);
     }
 
     public void goForward()
     {
-        System.out.println("To glory!");
         setPosition(new Position(getPosition().getX()+orientation.getFront().getX(), getPosition().getY()+orientation.getFront().getY()));
     }
 
@@ -28,15 +25,5 @@ public class Robot extends Field
     public void setOrientation(Direction orientation)
     {
         this.orientation = orientation;
-    }
-
-    public int getTurnedDegrees()
-    {
-        return turnedDegrees;
-    }
-
-    public void setTurnedDegrees(int turnedDegrees)
-    {
-        this.turnedDegrees = turnedDegrees;
     }
 }

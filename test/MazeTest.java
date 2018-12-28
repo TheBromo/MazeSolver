@@ -13,7 +13,7 @@ public class MazeTest {
 
     @BeforeAll
     public static void testInit() {
-        maze = new Maze(10);
+        maze = new Maze(10, new Position(1, 1));
     }
 
     @Test

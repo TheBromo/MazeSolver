@@ -9,9 +9,9 @@ public class Maze
     private Field[] fields;
     private int size;
 
-    public Maze(int size)
+    public Maze(int size, Position startPosition)
     {
-        robot = new Robot();
+        robot = new Robot(startPosition);
         this.size = size;
         fields = new Field[size * size];
         initFields();
@@ -21,7 +21,8 @@ public class Maze
     {
         for (int i = 0; i < fields.length; i++)
         {
-            fields[i] = new Field();
+            // Works because int always rounds down:
+            fields[i] = new Field(new Position(i - size * (i / size), i / size));
         }
     }
 
@@ -35,7 +36,7 @@ public class Maze
         return size;
     }
 
-    public void setField(Position position, Field field)
+    public void changeField(Position position, Field field)
     {
         fields[position.getX() + position.getY() * size] = field;
         field.setPosition(position);

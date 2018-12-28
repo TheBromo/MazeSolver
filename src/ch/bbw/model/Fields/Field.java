@@ -6,10 +6,6 @@ public class Field
 {
     private Position position;
 
-    public Field()
-    {
-    }
-
     public Field(Position position)
     {
         this.position = position;
