@@ -1,4 +1,4 @@
-package ch.bbw.model;
+package ch.bbw.solver.model;
 
 public class Direction
 {

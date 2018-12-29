@@ -4,10 +4,10 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.*?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="vbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
       minWidth="-Infinity" prefHeight="855.0" prefWidth="1369.0" xmlns="http://javafx.com/javafx/8"
-      fx:controller="ch.bbw.controller.FXMLController">
+      fx:controller="ch.bbw.solver.controller.FXMLController">
     <children>
         <HBox fx:id="header" prefHeight="31.0" prefWidth="900.0" styleClass="title-bar">
             <children>
@@ -76,11 +76,22 @@
                                 <Insets left="50.0" top="50.0"/>
                             </VBox.margin>
                         </CheckBox>
+                        <Button mnemonicParsing="false" onAction="#handleImport" prefHeight="22.0" prefWidth="97.0"
+                                style="-fx-background-color: #039be5; -fx-text-fill: White;" text="Import">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets left="50.0" top="50.0"/>
+                            </VBox.margin>
+                        </Button>
                     </children>
                 </VBox>
                 <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
-                    <Canvas fx:id="canvas" height="812.0" onMouseDragged="#handleMouseDrag"
-                            onMousePressed="#onMousePressed" width="1171.0" VBox.vgrow="ALWAYS"/>
+                    <children>
+                        <Canvas fx:id="canvas" height="812.0" onMouseDragged="#handleMouseDrag"
+                                onMousePressed="#onMousePressed" width="1171.0" VBox.vgrow="ALWAYS"/>
+                    </children>
                 </VBox>
             </children>
         </HBox>

@@ -1,5 +1,5 @@
-import ch.bbw.model.Maze;
-import ch.bbw.model.Position;
+import ch.bbw.solver.model.Maze;
+import ch.bbw.solver.model.Position;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

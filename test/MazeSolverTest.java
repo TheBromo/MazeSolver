@@ -1,4 +1,4 @@
-import ch.bbw.model.MazeSolver;
+import ch.bbw.solver.model.MazeSolver;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

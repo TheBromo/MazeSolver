@@ -1,7 +1,7 @@
-package ch.bbw.model;
+package ch.bbw.solver.model;
 
-import ch.bbw.model.Fields.Field;
-import ch.bbw.model.Fields.Robot;
+import ch.bbw.solver.model.fields.Field;
+import ch.bbw.solver.model.fields.Robot;
 
 public class Maze
 {

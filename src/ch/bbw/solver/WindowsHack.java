@@ -1,4 +1,4 @@
-package ch.bbw;
+package ch.bbw.solver;
 
 
 import javafx.geometry.Insets;

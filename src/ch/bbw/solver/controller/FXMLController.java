@@ -1,10 +1,12 @@
-package ch.bbw.controller;
+package ch.bbw.solver.controller;
 
-import ch.bbw.model.Fields.*;
-import ch.bbw.model.Maze;
-import ch.bbw.model.MazeSolver;
-import ch.bbw.model.Position;
+import ch.bbw.Map;
+import ch.bbw.solver.model.Maze;
+import ch.bbw.solver.model.MazeSolver;
+import ch.bbw.solver.model.Position;
+import ch.bbw.solver.model.fields.*;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -18,19 +20,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class FXMLController implements Initializable  {
+public class FXMLController implements Initializable {
     private static Image robot, wall, grass, flag;
-    @FXML
-    private CheckBox kidsMode;
     @FXML
     VBox vbox;
     @FXML
     HBox header;
     @FXML
     Canvas canvas;
+    @FXML
+    private CheckBox kidsMode;
     @FXML
     private Button startButton;
     @FXML
@@ -42,7 +45,7 @@ public class FXMLController implements Initializable  {
     private Stage primaryStage;
     private int size;
     private double oldX, oldY, lastDragX, lastDragY, offsetX, offsetY;
-
+    private Field[][] importedMap = null;
     private MazeSolver solver;
     private Thread calculatingThread;
 
@@ -82,26 +85,17 @@ public class FXMLController implements Initializable  {
         gc.translate(offsetX, offsetY);
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, maze.getSize() * size, maze.getSize() * size);
-        for (int x = 0; x < maze.getSize(); x++)
-        {
-            for (int y = 0; y < maze.getSize(); y++)
-            {
+        for (int x = 0; x < maze.getSize(); x++) {
+            for (int y = 0; y < maze.getSize(); y++) {
 
                 Field field = maze.getField(new Position(x, y));
-                if (field instanceof Empty)
-                {
+                if (field instanceof Empty) {
                     gc.drawImage(grass, x * size, y * size, size, size);
-                }
-                else if (field instanceof Wall)
-                {
+                } else if (field instanceof Wall) {
                     gc.drawImage(wall, x * size, y * size, size, size);
-                }
-                else if (field instanceof Robot)
-                {
+                } else if (field instanceof Robot) {
                     gc.drawImage(grass, field.getPosition().getX() * size, field.getPosition().getY() * size, size, size);
-                }
-                else
-                {
+                } else {
                     gc.drawImage(grass, x * size, y * size, size, size);
                     gc.drawImage(flag, x * size, y * size, size, size);
                 }
@@ -196,5 +190,17 @@ public class FXMLController implements Initializable  {
         lastDragX = mouseEvent.getX();
         lastDragY = mouseEvent.getY();
         externalDraw(solver.getMaze());
+    }
+
+    public void handleImport(ActionEvent actionEvent) {
+        try {
+            importedMap = new Map().importMap();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Field[][] getImportedMap() {
+        return importedMap;
     }
 }

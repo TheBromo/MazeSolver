@@ -1,7 +1,7 @@
-package ch.bbw.model.Fields;
+package ch.bbw.solver.model.fields;
 
-import ch.bbw.model.Direction;
-import ch.bbw.model.Position;
+import ch.bbw.solver.model.Direction;
+import ch.bbw.solver.model.Position;
 
 public class Robot extends Field
 {

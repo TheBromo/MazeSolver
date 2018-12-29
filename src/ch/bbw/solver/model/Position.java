@@ -1,4 +1,4 @@
-package ch.bbw.model;
+package ch.bbw.solver.model;
 
 public class Position
 {
@@ -8,6 +8,10 @@ public class Position
     {
         this.x = x;
         this.y = y;
+    }
+
+    public Position() {
+
     }
 
     public int getX()
