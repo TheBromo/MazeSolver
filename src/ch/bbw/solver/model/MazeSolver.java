@@ -7,11 +7,10 @@ public class MazeSolver implements Runnable {
     private final Direction UP, RIGHT, DOWN, LEFT;
     private FXMLController controller;
     private Maze maze;
-    private boolean solved, paused, pledge;
+    private boolean solved, paused;
     private Robot robot;
     private Start start;
     private Goal goal;
-    private int turnedDegrees;
 
     public MazeSolver(FXMLController controller) {
         this.controller = controller;
@@ -19,7 +18,6 @@ public class MazeSolver implements Runnable {
 
         solved = false;
         paused = false;
-        pledge = true;
 
         UP = new Direction(new Position(0, -1), new Position(1, 0), new Position(0, 1), new Position(-1, 0), new Position(1, 1));
         RIGHT = new Direction(new Position(1, 0), new Position(0, 1), new Position(-1, 0), new Position(0, -1), new Position(-1, 1));
@@ -35,8 +33,7 @@ public class MazeSolver implements Runnable {
             robot = maze.getRobot();
             robot.setOrientation(UP);
 
-            turnedDegrees = 0;
-
+            // Backup in case no map was uploaded before the user presses start
             char[] mapSetup =
                     {
                             'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w',
@@ -86,7 +83,6 @@ public class MazeSolver implements Runnable {
             robot = maze.getRobot();
             robot.setOrientation(UP);
 
-            turnedDegrees = 0;
             Field[] finalMap = maze.getFields();
             int count = 0;
             for (int x = 0; x < fields.length; x++) {
@@ -118,26 +114,31 @@ public class MazeSolver implements Runnable {
         return new Position(first.getX() + second.getX(), first.getY() + second.getY());
     }
 
+    private boolean positionsAreEqual(Position firstPosition, Position secondPosition)
+    {
+        return firstPosition.getX() == secondPosition.getX() && firstPosition.getY() == secondPosition.getY();
+    }
+
     private void solve() {
+        controller.externalDraw();
         while (!solved) {
             if (!paused) {
                 System.out.println("x=" + robot.getPosition().getX() + " y=" + robot.getPosition().getY()
-                        + "degrees=" + turnedDegrees + "\n");
+                        + "\ndegrees=" + robot.getTurnedDegrees() + "\n");
 
-                controller.externalDraw(maze);
                 step();
-
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                controller.externalDraw();
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
 
     private void step() {
-        if (robot.getPosition().getX() == goal.getPosition().getX() && robot.getPosition().getY() == goal.getPosition().getY()) {
+        if (positionsAreEqual(robot.getPosition(), goal.getPosition())) {
             System.out.println("Freedom!");
             solved = true;
         } else {
@@ -149,61 +150,50 @@ public class MazeSolver implements Runnable {
             Field leftField = maze.getField(combinePositions(orientation.getLeft(), robot.getPosition()));
             Field rightBackField = maze.getField(combinePositions(orientation.getRightBack(), robot.getPosition()));
 
-            if ((!isWall(frontField) && isWall(rightField)) || (!isWall(frontField) && pledge && turnedDegrees == 0)) {
-                robot.goForward();
-            } else if (isWall(rightBackField) && !isWall(rightField)) {
-                turnRight(robot);
-                turnedDegrees -= 90;
-                robot.goForward();
-            } else if (!isWall(leftField)) {
-                turnRight(robot);
-                turnRight(robot);
-                turnRight(robot);
-                turnedDegrees += 90;
-                robot.goForward();
-            } else if (!isWall(backField)) {
-                turnRight(robot);
-                turnRight(robot);
-                turnedDegrees += 180;
-                robot.goForward();
-            } else if (!isWall(rightField)) {
-                turnRight(robot);
-                turnedDegrees -= 90;
+            if ((!isWall(frontField) && isWall(rightField))
+                    || (!isWall(frontField) && controller.isPledge() && robot.getTurnedDegrees() == 0)) {
                 robot.goForward();
             }
+            else if (isWall(rightBackField) && !isWall(rightField)) {
+                turnRight(robot);
+                robot.turn(90);
+                robot.goForward();
+            }
+            else if (!isWall(leftField)) {
+                turnRight(robot);
+                turnRight(robot);
+                turnRight(robot);
+                robot.turn(-90);
+                robot.goForward();
+            }
+            else if (!isWall(backField)) {
+                turnRight(robot);
+                turnRight(robot);
+                robot.turn(-180);
+                robot.goForward();
+            }
+            else if (!isWall(rightField)) {
+                turnRight(robot);
+                robot.turn(90);
+                robot.goForward();
+            }
+            else {
+                System.out.println("I'm stuck!");
+            }
         }
+    }
+
+    @Override
+    public void run() {
+        solve();
     }
 
     public Maze getMaze() {
         return maze;
     }
 
-    public void setMaze(Maze maze) {
-        this.maze = maze;
-    }
-
-    public boolean isSolved() {
-        return solved;
-    }
-
     public void setSolved(boolean solved) {
         this.solved = solved;
-    }
-
-    public Robot getRobot() {
-        return robot;
-    }
-
-    public void setRobot(Robot robot) {
-        this.robot = robot;
-    }
-
-    public Goal getGoal() {
-        return goal;
-    }
-
-    public void setGoal(Goal goal) {
-        this.goal = goal;
     }
 
     public boolean isPaused() {
@@ -212,10 +202,5 @@ public class MazeSolver implements Runnable {
 
     public void setPaused(boolean paused) {
         this.paused = paused;
-    }
-
-    @Override
-    public void run() {
-        solve();
     }
 }

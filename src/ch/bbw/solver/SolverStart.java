@@ -8,26 +8,21 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-
 public class SolverStart extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Solver.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/solver.fxml"));
         Parent root = loader.load();
         FXMLController controller = loader.getController();
 
-        Scene scene = null;
+        Scene scene;
 
         String osName = System.getProperty("os.name");
         if( osName != null && osName.startsWith("Windows") ) {
-
-            //
-            // Windows hack b/c unlike Mac and Linux, UNDECORATED doesn't include a shadow
-            //
+            // Windows hack b/c unlike Mac and Linux, here UNDECORATED doesn't include a shadow
             scene = (new WindowsHack()).getShadowScene(root);
             stage.initStyle(StageStyle.TRANSPARENT);
-
         } else {
             scene = new Scene( root );
             stage.initStyle(StageStyle.UNDECORATED);
@@ -40,9 +35,7 @@ public class SolverStart extends Application {
         stage.setMinWidth(300.0d);
         stage.show();
         controller.setPrimaryStage(stage);
-
     }
-
 
     /**
      * The main() method is ignored in correctly deployed JavaFX application.
@@ -55,5 +48,4 @@ public class SolverStart extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }

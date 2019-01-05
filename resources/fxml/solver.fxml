@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="vbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="855.0" prefWidth="1369.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.bbw.solver.controller.FXMLController">
+    <children>
+        <HBox fx:id="header" prefHeight="31.0" prefWidth="900.0" styleClass="title-bar">
+            <children>
+                <HBox alignment="CENTER" prefHeight="27.0" prefWidth="70.0" />
+                <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="title" text="Maze Solver">
+                            <font>
+                                <Font name="Bradley Hand ITC" size="15.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefWidth="20.0">
+                    <children>
+                        <Button alignment="CENTER" minWidth="50.0" mnemonicParsing="false" onMouseClicked="#close" prefWidth="50.0" style="-fx-background-color: #d63031; -fx-border-radius: 0; -fx-text-fill: #dfe6e9;" styleClass="close-button" text="X" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets left="20.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </HBox>
+        <HBox>
+            <children>
+                <VBox prefHeight="812.0" prefWidth="0.0" style="-fx-background-color: #dfe6e9;" styleClass="sidepanel" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Button fx:id="importButton" mnemonicParsing="false" onAction="#handleImport" prefHeight="57.0" prefWidth="97.0" style="-fx-background-color: #039be5; -fx-text-fill: White;" text="Irrgarten importieren" wrapText="true">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="50.0" top="50.0" />
+                            </VBox.margin>
+                        </Button>
+                  <Label text="Algorithmus">
+                     <VBox.margin>
+                        <Insets left="50.0" top="50.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <RadioButton fx:id="rightHandAlgorithm" mnemonicParsing="false" selected="true" text="Rechte Hand">
+                     <VBox.margin>
+                        <Insets left="50.0" top="10.0" />
+                     </VBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="algorithm" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="pledgeAlgorithm" mnemonicParsing="false" text="Pledge" toggleGroup="$algorithm">
+                     <VBox.margin>
+                        <Insets left="50.0" top="10.0" />
+                     </VBox.margin>
+                  </RadioButton>
+                  <Label text="Modus">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="50.0" top="50.0" />
+                     </VBox.margin>
+                  </Label>
+                  <RadioButton mnemonicParsing="false" selected="true" text="Normal">
+                     <VBox.margin>
+                        <Insets left="50.0" top="10.0" />
+                     </VBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="mode" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="kidsMode" mnemonicParsing="false" text="Kinder" toggleGroup="$mode">
+                     <VBox.margin>
+                        <Insets left="50.0" top="10.0" />
+                     </VBox.margin>
+                  </RadioButton>
+                        <Button fx:id="startButton" mnemonicParsing="false" onAction="#handleStart" prefHeight="57.0" prefWidth="97.0" style="-fx-background-color: #00b894; -fx-text-fill: White;" text="Start">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="50.0" top="50.0" />
+                            </VBox.margin>
+                        </Button>
+                        <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#handlePause" prefHeight="57.0" prefWidth="97.0" style="-fx-background-color: #fdcb6e; -fx-text-fill: White;" text="Pause">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="50.0" top="25.0" />
+                            </VBox.margin>
+                        </Button>
+                        <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleReset" prefHeight="57.0" prefWidth="97.0" style="-fx-background-color: #d63031; -fx-text-fill: White;" text="Reset">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets left="50.0" top="25.0" />
+                            </VBox.margin>
+                        </Button>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Canvas fx:id="canvas" height="812.0" onMouseDragged="#handleMouseDrag" onMousePressed="#onMousePressed" width="1171.0" VBox.vgrow="ALWAYS" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+</VBox>
