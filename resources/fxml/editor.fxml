@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.bbw.editor.EditorController">
+    <left>
+        <VBox prefHeight="1000.0" prefWidth="200.0" style="-fx-background-color: #eceff1;" BorderPane.alignment="CENTER">
+            <children>
+            <Label text="Felder">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="20.0" top="50.0" />
+               </VBox.margin>
+            </Label>
+                <TextField fx:id="side" promptText="nur ganze Zahlen">
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="10.0" />
+                    </VBox.margin>
+                </TextField>
+                <Button mnemonicParsing="false" onAction="#handleGenerate" prefHeight="25.0" prefWidth="191.0" text="Irrgarten generieren" VBox.vgrow="ALWAYS">
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="10.0" />
+                    </VBox.margin>
+                </Button>
+            <Label text="Felder">
+               <VBox.margin>
+                  <Insets left="20.0" top="50.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+                <RadioButton fx:id="wall" mnemonicParsing="false" selected="true" text="Wand" toggleGroup="$blockType">
+                    <VBox.margin>
+                        <Insets left="20.0" top="10.0" />
+                    </VBox.margin>
+                    <toggleGroup>
+                        <ToggleGroup fx:id="blockType" />
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="empty" mnemonicParsing="false" text="Leer" toggleGroup="$blockType">
+                    <VBox.margin>
+                        <Insets left="20.0" top="10.0" />
+                    </VBox.margin>
+                </RadioButton>
+                <RadioButton fx:id="start" mnemonicParsing="false" text="Start" toggleGroup="$blockType">
+                    <toggleGroup>
+                        <ToggleGroup />
+                    </toggleGroup>
+                    <VBox.margin>
+                        <Insets left="20.0" top="10.0" />
+                    </VBox.margin>
+                </RadioButton>
+                <RadioButton fx:id="goal" mnemonicParsing="false" text="Ausgang" toggleGroup="$blockType">
+                    <VBox.margin>
+                        <Insets left="20.0" top="10.0" />
+                    </VBox.margin>
+                </RadioButton>
+                <Button mnemonicParsing="false" onAction="#handleImport" prefHeight="25.0" prefWidth="191.0" text="Irrgarten laden">
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="50.0" />
+                    </VBox.margin>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#handleExport" prefHeight="25.0" prefWidth="191.0" text="Irrgarten speichern">
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="10.0" />
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+    </left>
+    <center>
+
+    </center>
+    <center>
+        <Canvas fx:id="canvas" height="1000.0" onMouseClicked="#click" onMouseDragged="#handleMouseDrag" onMousePressed="#onMouseClicked" width="1000.0" BorderPane.alignment="TOP_LEFT" />
+    </center>
+</BorderPane>

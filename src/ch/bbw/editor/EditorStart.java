@@ -14,8 +14,8 @@ public class EditorStart extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("editor.fxml"));
-        primaryStage.setTitle("Hello World");
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/editor.fxml"));
+        primaryStage.setTitle("Maze Editor");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

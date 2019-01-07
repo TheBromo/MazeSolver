@@ -1,18 +1,18 @@
 package ch.bbw.solver.model;
 
-import ch.bbw.solver.controller.FXMLController;
+import ch.bbw.solver.SolverController;
 import ch.bbw.solver.model.fields.*;
 
 public class MazeSolver implements Runnable {
     private final Direction UP, RIGHT, DOWN, LEFT;
-    private FXMLController controller;
+    private SolverController controller;
     private Maze maze;
     private boolean solved, paused;
     private Robot robot;
     private Start start;
     private Goal goal;
 
-    public MazeSolver(FXMLController controller) {
+    public MazeSolver(SolverController controller) {
         this.controller = controller;
         controller.setSolver(this);
 
@@ -120,13 +120,19 @@ public class MazeSolver implements Runnable {
     }
 
     private void solve() {
-        controller.externalDraw();
+        try {
+            System.out.println("x=" + robot.getPosition().getX() + " y=" + robot.getPosition().getY()
+                    + "\ndegrees=" + robot.getTurnedDegrees() + "\n");
+            controller.externalDraw();
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         while (!solved) {
             if (!paused) {
+                step();
                 System.out.println("x=" + robot.getPosition().getX() + " y=" + robot.getPosition().getY()
                         + "\ndegrees=" + robot.getTurnedDegrees() + "\n");
-
-                step();
                 controller.externalDraw();
             }
             try {

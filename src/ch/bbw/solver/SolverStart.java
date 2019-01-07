@@ -1,6 +1,5 @@
 package ch.bbw.solver;
 
-import ch.bbw.solver.controller.FXMLController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +13,7 @@ public class SolverStart extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/solver.fxml"));
         Parent root = loader.load();
-        FXMLController controller = loader.getController();
+        SolverController controller = loader.getController();
 
         Scene scene;
 

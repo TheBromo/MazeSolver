@@ -1,4 +1,4 @@
-package ch.bbw.solver.controller;
+package ch.bbw.solver;
 
 import ch.bbw.Map;
 import ch.bbw.solver.model.Maze;
@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class FXMLController implements Initializable {
+public class SolverController implements Initializable {
 
     @FXML
     VBox vbox;
