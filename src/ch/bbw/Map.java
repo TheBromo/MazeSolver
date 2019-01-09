@@ -25,7 +25,7 @@ public class Map {
         dialog.setMode(FileDialog.SAVE);
         dialog.setFile("file.maze");
         dialog.setVisible(true);
-        String filename = dialog.getFile();
+        String filename = dialog.getDirectory() + dialog.getFile();
         if (filename == null) return;
         if (!filename.contains(".maze")) filename += ".maze";
         writeFile(buffer.array(), filename);
@@ -36,7 +36,7 @@ public class Map {
         dialog.setMode(FileDialog.LOAD);
         dialog.setFile("*.maze");
         dialog.setVisible(true);
-        String filename = dialog.getFile();
+        String filename = dialog.getDirectory() + dialog.getFile();
         if (filename == null) return null;
         ByteBuffer buffer = ByteBuffer.wrap(getFileText(filename));
         int w = buffer.getInt();
