@@ -1,5 +1,7 @@
-# MaceSolver
-This Program finds a way out of a maze using the Pledge algorithm.
+With this software you can create mazes and find a way out of it using the Pledge-Algorithm.
 
-[Documentation]( https://docs.google.com/document/d/1CltZcnlnEs8pdDMtcxNgF_esVF7fP-x49bvrSVH5LMc/edit?usp=sharing)
+# Maze_Editor
+Diese Applikation ist separat zum eigentlichen Programm und dient zum einen zum Vereinfachen testen für Entwickler, zum anderen kann ein Benutzer damit seine eigenen Irrgärten konzipieren. Man muss nur eine Feldergrösse eingeben und ein Quadrat mit der entsprechenden Seitenlänge, exklusive der Aussenwand, wird generiert. Danach kann man frei Elemente hinzufügen. Um den Benutzer nicht einzuschränken, vielleicht möchte er ja irgendwelche Experimente mit dem Algorithmus durchführen, haben wir für die Elemente bewusst keine Regeln eingeführt, d.h. man kann das Ziel auch irgendwo im Irrgarten setzen. Dies mit dem Gedanken, dass jemand, der sich diese Software aneignen würde erstens wüsste, mit was er es zu tun hat und zweitens hat man noch unsere Dokumentation als Erklärung des Algorithmus.
 
+# Maze_Solver
+Man kann mit dem «Maze Editor» kreierte Irrgarten (auch hier mit einem Wizard) importieren und sich dann für einen Algorithmus entscheiden. Wir haben zwei verschiedene Modi erstellt, einen welcher etwas übersichtlicher ist und dann noch einen der das Ganze noch spielerisch inszeniert.
